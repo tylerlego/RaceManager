@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
-import { RaceSignupService } from "../Services/RaceSignupService";
-import { RaceSignup } from "../Types/RaceSignup";
+import { RaceRegistrationService } from "../Services/RaceRegistrationService";
 import { Table } from "@mantine/core";
+import { RaceSignupParams } from "../Types/RaceSignup";
 
-export default function StaffDashboard() {
-  const raceSignupService = new RaceSignupService();
-  const [registrationData, setRegistrationData] = useState<[]>([]);
+export default function StaffDashboardComponent() {
+  const raceSignupService = new RaceRegistrationService();
   const [rows, setRows] = useState<JSX.Element[]>([]);
 
   useEffect(() => { 
     raceSignupService.getAllRegistrationRecords().then((data) => {
-      setRegistrationData(data.result);
-      const rows = data.result.map((element: RaceSignup.RaceSignupFormParams) => (
+      const rows = data.result.map((element: RaceSignupParams) => (
         <Table.Tr key={element.firstName + element.lastName}>
           <Table.Td>{element.firstName + ' ' + element.lastName}</Table.Td>
           <Table.Td>{element.desiredClass}</Table.Td>
@@ -23,10 +21,8 @@ export default function StaffDashboard() {
     });
   }, []);
 
-
   return (
     <div>
-      <h1>Staff Dashboard</h1>
       <p>View and manage all  upcoming events</p>
       <Table>
       <Table.Thead>

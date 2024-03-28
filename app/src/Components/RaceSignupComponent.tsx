@@ -1,28 +1,34 @@
 import { Box, Button, Group, List, Select, Stepper, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form'
-import { RaceSignup } from '../Types/RaceSignup';
-import { useState } from 'react';
-import { RaceSignupService } from '../Services/RaceSignupService';
+import { useEffect, useState } from 'react';
+import { RaceRegistrationService } from '../Services/RaceRegistrationService';
+import { RaceSignupParams } from '../Types/RaceSignup';
+import { CarClass } from '../Types/CarClass';
+import { Car } from '../Types/Car';
 
-
-export default function RaceSignupForm() {
+export default function RaceSignupComponent(props: {
+  carClasses: CarClass[];
+  cars: Car[];
+}) {
   const [active, setActive] = useState(0);
-  const [desiredCarOptions, setDesiredCarOptions] = useState<{ value: string; label: string }[]>([]);
-  const [raceSignupFormParams, setRaceSignupFormParams] = useState<RaceSignup.RaceSignupFormParams>({
+  const [carOptions, setCarOptions] = useState<{ value: string; label: string }[]>([]);
+  const [carClassOptions, setCarClassOptions] = useState<{ value: string; label: string }[]>([]);
+
+  const [raceSignupParams, setRaceSignupParams] = useState<RaceSignupParams>({
     firstName: '',
     lastName: '',
     desiredClass: '',
     desiredCar: '',
   });
 
-  const raceSignupService = new RaceSignupService();
+  const raceSignupService = new RaceRegistrationService();
 
   const form = useForm({
     initialValues: {
       firstName: '',
       lastName: '',
-      desiredClass: '' as RaceSignup.CarClass,
-      desiredCar: '' as RaceSignup.GT3Model | RaceSignup.LMP2Model | RaceSignup.GTPModel,
+      desiredClass: '',
+      desiredCar: '',
     },
     validate: (values) => {
       if (active === 0) {
@@ -42,17 +48,7 @@ export default function RaceSignupForm() {
   });
 
   const nextStep = () => {
-    setRaceSignupFormParams(form.values);
-    
-    if (active === 0) {
-      if (form.values.desiredClass === RaceSignup.CarClass.GTP) {
-        setDesiredCarOptions(Object.values(RaceSignup.GTPModel).map((value) => ({ value, label: value })));
-      } else if (form.values.desiredClass === RaceSignup.CarClass.LMP2) {
-        setDesiredCarOptions(Object.values(RaceSignup.LMP2Model).map((value) => ({ value, label: value })));
-      } else if (form.values.desiredClass === RaceSignup.CarClass.GT3) {
-        setDesiredCarOptions(Object.values(RaceSignup.GT3Model).map((value) => ({ value, label: value })));
-      }
-    }
+    setRaceSignupParams(form.values);
     setActive((current) => {
       if (form.validate().hasErrors) {
         return current;
@@ -64,18 +60,22 @@ export default function RaceSignupForm() {
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const submitRegistrationForm = async () => {
-    console.log('Submitting form: ', raceSignupFormParams);
-    const result = await raceSignupService.addRaceRegistration(raceSignupFormParams); // Call to RaceSignupService to add new registration
+    console.log('Submitting form: ', raceSignupParams);
+    const result = await raceSignupService.addRaceRegistration(raceSignupParams); // Call to RaceSignupService to add new registration
     console.log(result);
+    window.location.href = '/';
   };
+
+  useEffect(() => {
+    setCarClassOptions(props.carClasses.map((carClass) => ({ value: carClass.name, label: carClass.name })));
+    setCarOptions(props.cars.filter((car) => {
+      return car.class === form.values.desiredClass;
+    }).map((car) => { return { value: car.name, label: car.name } }));
+
+  }, [props.carClasses, props.cars, form.values.desiredClass]);
 
   return (
     <>
-      <header className="App-header">
-        <p>
-          JJC Racing Special Event Registration Form
-        </p>
-      </header>
       <form onSubmit={form.onSubmit(submitRegistrationForm)}>
         <Box maw={340} mx="auto">
           <Stepper active={active}>
@@ -94,7 +94,7 @@ export default function RaceSignupForm() {
                 withAsterisk
                 withCheckIcon={false}
                 label="Desired Class"
-                data={Object.values(RaceSignup.CarClass).map((value) => ({ value, label: value }))}
+                data={carClassOptions}
                 {...form.getInputProps('desiredClass')}
               />
             </Stepper.Step>
@@ -103,22 +103,21 @@ export default function RaceSignupForm() {
                 withAsterisk
                 withCheckIcon={false}
                 label="Desired Car"
-                data={desiredCarOptions}
+                data={carOptions}
                 {...form.getInputProps('desiredCar')}
-
               />
             </Stepper.Step>
             <Stepper.Completed>
               Wow, you did it!
               <List>
                 <List.Item>
-                  Name: {raceSignupFormParams.firstName} {raceSignupFormParams.lastName}
+                  Name: {raceSignupParams.firstName} {raceSignupParams.lastName}
                 </List.Item>
                 <List.Item>
-                  Desired Class: {raceSignupFormParams.desiredClass}
+                  Desired Class: {raceSignupParams.desiredClass}
                 </List.Item>
                 <List.Item>
-                  Desired Car: {raceSignupFormParams.desiredCar}
+                  Desired Car: {raceSignupParams.desiredCar}
                 </List.Item>
               </List>
             </Stepper.Completed>

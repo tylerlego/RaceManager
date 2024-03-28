@@ -44,6 +44,32 @@ app.get('/api/race/registration', async (req: Request, res: Response) => {
   }
 });
 
+app.get('/api/cars/classes', async (req: Request, res: Response) => {
+  try {
+    // Get all car classes
+    const connection = await dbClient.connect();
+    const collection = await connection?.collection("CarClass");
+    const result = await collection?.find().toArray();
+    res.send({msg: 'Successfully got car class data!', result});
+  } catch (error) {
+    console.error('Failed to get', error);
+    res.status(500).send({msg: 'Failed to get', error}); 
+  }
+});
+
+app.get('/api/cars', async (req: Request, res: Response) => {
+  try {
+    // Get all car classes
+    const connection = await dbClient.connect();
+    const collection = await connection?.collection("Car");
+    const result = await collection?.find().toArray();
+    res.send({msg: 'Successfully got car data!', result});
+  } catch (error) {
+    console.error('Failed to get', error);
+    res.status(500).send({msg: 'Failed to get', error}); 
+  }
+});
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

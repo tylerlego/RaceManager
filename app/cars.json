@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Ferrari 296 GT3",
+        "class": "GT3"
+    },
+    {
+        "name": "Mercedes-AMG GT3",
+        "class": "GT3"
+    },
+    {
+        "name": "Porsche 911 GT3 R",
+        "class": "GT3"
+    },
+    {
+        "name": "Audi R8 LMS GT3",
+        "class": "GT3"
+    },
+    {
+        "name": "BMW M4 GT3",
+        "class": "GT3"
+    },
+    {
+        "name": "Porsche 963 LMDH",
+        "class": "GTP"
+    },
+    {
+        "name": "Cadillac V-Series.R",
+        "class": "GTP"
+    },
+    {
+        "name": "Acura ARX-06 LMDH",
+        "class": "GTP"
+    },
+    {
+        "name": "BMW M-Hybrid V8",
+        "class": "GTP"
+    },
+    {
+        "name": "Dallara P217",
+        "class": "LMP2"
+    }
+]

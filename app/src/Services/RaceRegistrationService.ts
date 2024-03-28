@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: process.env.REACT_APP_BASE_API_URL ? process.env.REACT_APP_BASE_API_URL : 'http://localhost:4000/api/',
+  baseURL: process.env.REACT_APP_BASE_API_URL,
 });
 
-class RaceSignupService {
+class RaceRegistrationService {
   public async addRaceRegistration(registrationData: any): Promise<any> {
     try {
       const response = await client.post('race/registration', registrationData);
@@ -24,4 +24,4 @@ class RaceSignupService {
   }
 }
 
-export { RaceSignupService };
+export { RaceRegistrationService };
