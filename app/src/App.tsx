@@ -2,24 +2,40 @@ import React from 'react';
 import './App.css';
 import RaceSignupForm from './Components/RaceSignupForm';
 import '@mantine/core/styles.css';
-import { AppShell, Burger, Image, MantineProvider } from '@mantine/core';
+import { AppShell, Burger, Button, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import StaffDashboard from './Components/StaffDashboard';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 function App() {
   const [opened, { toggle }] = useDisclosure();
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <RaceSignupForm />,
+    },
+    {
+      path: "/signup",
+      element: <RaceSignupForm />,
+    },
+    {
+      path: "/dashboard",
+      element: <StaffDashboard />,
+    },
+  ]);
+
   return (
-    <MantineProvider>
-      {/* <AppShell
+      <AppShell
         header={{ height: 60 }}
         navbar={{
-          width: 150,
+          width: 250,
           breakpoint: 'sm',
           collapsed: { mobile: !opened },
         }}
         padding="md"
       >
-        <AppShell.Header>
+        <AppShell.Header  >
           <Burger
             opened={opened}
             onClick={toggle}
@@ -27,37 +43,42 @@ function App() {
             size="sm"
           />
           <div>
-            <Image
-              radius="md"
-              h={55}
-              w={55}
-              src="http://localhost:3000/imgs/jjc.jpeg"
-            />
+            <p>
+              JJC Racing Member Site
+            </p>
           </div>
         </AppShell.Header>
-        <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
-
+        <AppShell.Navbar p="md">
+          <Group 
+            justify='center'
+          >
+            <AppShell.Section>
+              <Button component='a' href='404' variant='subtle'>
+                Profile/Stats
+              </Button>
+            </AppShell.Section>
+            <AppShell.Section>
+              <Button component='a' href='/signup' variant='subtle'>
+                Upcoming Events
+              </Button>
+            </AppShell.Section>
+            <AppShell.Section>
+              <Button component='a' href='404' variant='subtle'>
+                Team Results
+              </Button>
+            </AppShell.Section>
+            <AppShell.Section>
+              <Button component='a' href='/dashboard' variant='subtle'>
+                Staff Dashboard
+              </Button>
+            </AppShell.Section>
+          </Group>
+        </AppShell.Navbar>
         <AppShell.Main>
-          <div className="App">
-            <header className="App-header">
-              <p>
-                JJC Racing Special Event Registration Form
-              </p>
-            </header>
-            <RaceSignupForm />
-          </div>
+            <RouterProvider router={router} />
         </AppShell.Main>
-      </AppShell> */}
+      </AppShell>
 
-      <div className="App">
-        <header className="App-header">
-          <p>
-            JJC Racing Special Event Registration Form
-          </p>
-        </header>
-        <RaceSignupForm />
-      </div>
-    </MantineProvider>
   );
 }
 

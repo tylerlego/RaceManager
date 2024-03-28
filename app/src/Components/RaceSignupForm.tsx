@@ -70,63 +70,71 @@ export default function RaceSignupForm() {
   };
 
   return (
-    <form onSubmit={form.onSubmit(submitRegistrationForm)}>
-      <Box maw={340} mx="auto">
-        <Stepper active={active}>
-          <Stepper.Step label="Step 1">
-            <TextInput
-              withAsterisk
-              label="First Name"
-              {...form.getInputProps('firstName')}
-            />
-            <TextInput
-              withAsterisk
-              label="Last Name"
-              {...form.getInputProps('lastName')}
-            />
-            <Select
-              withAsterisk
-              withCheckIcon={false}
-              label="Desired Class"
-              data={Object.values(RaceSignup.CarClass).map((value) => ({ value, label: value }))}
-              {...form.getInputProps('desiredClass')}
-            />
-          </Stepper.Step>
-          <Stepper.Step label="Step 2">
-            <Select
-              withAsterisk
-              withCheckIcon={false}
-              label="Desired Car"
-              data={desiredCarOptions}
-              {...form.getInputProps('desiredCar')}
+    <>
+      <header className="App-header">
+        <p>
+          JJC Racing Special Event Registration Form
+        </p>
+      </header>
+      <form onSubmit={form.onSubmit(submitRegistrationForm)}>
+        <Box maw={340} mx="auto">
+          <Stepper active={active}>
+            <Stepper.Step label="Step 1">
+              <TextInput
+                withAsterisk
+                label="First Name"
+                {...form.getInputProps('firstName')}
+              />
+              <TextInput
+                withAsterisk
+                label="Last Name"
+                {...form.getInputProps('lastName')}
+              />
+              <Select
+                withAsterisk
+                withCheckIcon={false}
+                label="Desired Class"
+                data={Object.values(RaceSignup.CarClass).map((value) => ({ value, label: value }))}
+                {...form.getInputProps('desiredClass')}
+              />
+            </Stepper.Step>
+            <Stepper.Step label="Step 2">
+              <Select
+                withAsterisk
+                withCheckIcon={false}
+                label="Desired Car"
+                data={desiredCarOptions}
+                {...form.getInputProps('desiredCar')}
 
-            />
-          </Stepper.Step>
-          <Stepper.Completed>
-            Wow, you did it!
-            <List>
-              <List.Item>
-                Name: {raceSignupFormParams.firstName} {raceSignupFormParams.lastName}
-              </List.Item>
-              <List.Item>
-                Desired Class: {raceSignupFormParams.desiredClass}
-              </List.Item>
-              <List.Item>
-                Desired Car: {raceSignupFormParams.desiredCar}
-              </List.Item>
-            </List>
-          </Stepper.Completed>
-        </Stepper>
-        <Group justify="flex-end" mt="xl">
-          {active !== 0 && (
-            <Button variant="default" onClick={prevStep}>
-              Back
-            </Button>
-          )}
-          {active !== 2 && <Button disabled={!form.isValid} onClick={nextStep}>Next step</Button>}
-          {active === 2 && <Button type="submit" disabled={!form.isValid} onSubmit={submitRegistrationForm}>Submit</Button>}
-        </Group>
-      </Box>
-    </form>
+              />
+            </Stepper.Step>
+            <Stepper.Completed>
+              Wow, you did it!
+              <List>
+                <List.Item>
+                  Name: {raceSignupFormParams.firstName} {raceSignupFormParams.lastName}
+                </List.Item>
+                <List.Item>
+                  Desired Class: {raceSignupFormParams.desiredClass}
+                </List.Item>
+                <List.Item>
+                  Desired Car: {raceSignupFormParams.desiredCar}
+                </List.Item>
+              </List>
+            </Stepper.Completed>
+          </Stepper>
+          <Group justify="flex-end" mt="xl">
+            {active !== 0 && (
+              <Button variant="default" onClick={prevStep}>
+                Back
+              </Button>
+            )}
+            {active !== 2 && <Button disabled={!form.isValid} onClick={nextStep}>Next step</Button>}
+            {active === 2 && <Button type="submit" disabled={!form.isValid} onSubmit={submitRegistrationForm}>Submit</Button>}
+          </Group>
+        </Box>
+      </form>
+    </>
+
   );
 }

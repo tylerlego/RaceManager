@@ -5,13 +5,21 @@ const client = axios.create({
 });
 
 class RaceSignupService {
-  // constructor() {}  
   public async addRaceRegistration(registrationData: any): Promise<any> {
     try {
       const response = await client.post('race/registration', registrationData);
       return response.data;
     } catch (error) {
       throw new Error('Failed to add race registration');
+    }
+  }
+
+  public async getAllRegistrationRecords(): Promise<any> {
+    try {
+      const response = await client.get('race/registration');
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to get race registration data');
     }
   }
 }
