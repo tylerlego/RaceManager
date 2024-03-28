@@ -4,7 +4,6 @@ TypeScript web app built to help my iRacing team manage race registration and te
 
 ### Frontend
 - React
-- Mantine
 
 ### Backend
 - NodeJS
