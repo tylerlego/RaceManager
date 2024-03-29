@@ -55,7 +55,7 @@ function App() {
         />
         <div>
           <p>
-            JJC Racing Member Site
+            JJC Racing Member Site - Under Construction!
           </p>
         </div>
       </AppShell.Header>
