@@ -16,6 +16,7 @@ class RaceRegistrationService {
 
   public async getAllRegistrationRecords(): Promise<any> {
     try {
+      console.log("getting reg records", process.env.REACT_APP_BASE_API_URL);
       const response = await client.get('race/registration');
       return response.data;
     } catch (error) {
