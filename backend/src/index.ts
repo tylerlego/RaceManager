@@ -33,6 +33,7 @@ app.post('/api/race/registration', async (req: Request, res: Response) => {
 
 app.get('/api/race/registration', async (req: Request, res: Response) => {
   try {
+    console.log("GETTING REGISTRATION!");
     // Get all registrations
     const connection = await dbClient.connect();
     const collection = await connection?.collection("RaceRegistration");
