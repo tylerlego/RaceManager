@@ -3,4 +3,5 @@ export type RaceSignupParams = {
   lastName: string;
   desiredClass: string;
   desiredCar: string;
+  eventName?: string;
 }

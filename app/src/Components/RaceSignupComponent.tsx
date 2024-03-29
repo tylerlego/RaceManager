@@ -3,12 +3,13 @@ import { useForm } from '@mantine/form'
 import { useEffect, useState } from 'react';
 import { RaceRegistrationService } from '../Services/RaceRegistrationService';
 import { RaceSignupParams } from '../Types/RaceSignup';
-import { CarClass } from '../Types/CarClass';
 import { Car } from '../Types/Car';
+import { RaceEvent } from '../Types/RaceEvent';
 
 export default function RaceSignupComponent(props: {
-  carClasses: CarClass[];
+  carClasses: string[];
   cars: Car[];
+  raceEvent?: RaceEvent | null;
 }) {
   const [active, setActive] = useState(0);
   const [carOptions, setCarOptions] = useState<{ value: string; label: string }[]>([]);
@@ -60,14 +61,15 @@ export default function RaceSignupComponent(props: {
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const submitRegistrationForm = async () => {
+    raceSignupParams.eventName = props.raceEvent?.name;
     console.log('Submitting form: ', raceSignupParams);
-    const result = await raceSignupService.addRaceRegistration(raceSignupParams); // Call to RaceSignupService to add new registration
-    console.log(result);
+    await raceSignupService.addRaceRegistration(raceSignupParams);
     window.location.href = '/';
   };
 
   useEffect(() => {
-    setCarClassOptions(props.carClasses.map((carClass) => ({ value: carClass.name, label: carClass.name })));
+    const classes = props.raceEvent?.carClasses ? props.raceEvent.carClasses : [];
+    setCarClassOptions(classes.map((carClass) => { return { value: carClass, label: carClass } }));
     setCarOptions(props.cars.filter((car) => {
       return car.class === form.values.desiredClass;
     }).map((car) => { return { value: car.name, label: car.name } }));

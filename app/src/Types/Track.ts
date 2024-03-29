@@ -1,5 +1,5 @@
 export type Track = {
     name: string;
-    length: number;
+    type: string;
     image: string;
 }

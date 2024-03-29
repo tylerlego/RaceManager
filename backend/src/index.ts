@@ -70,6 +70,19 @@ app.get('/api/cars', async (req: Request, res: Response) => {
   }
 });
 
+app.get('/api/events', async (req: Request, res: Response) => {
+  try {
+    // Get all events
+    const connection = await dbClient.connect();
+    const collection = await connection?.collection("RaceEvent");
+    const result = await collection?.find().toArray();
+    res.send({msg: 'Successfully got event data!', result});
+  } catch (error) {
+    console.error('Failed to get', error);
+    res.status(500).send({msg: 'Failed to get', error}); 
+  }
+});
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

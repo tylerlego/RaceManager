@@ -6,22 +6,12 @@ import { useDisclosure } from '@mantine/hooks';
 import StaffDashboard from './Components/StaffDashboardComponent';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './Components/HomeComponent';
-import { CarService } from './Services/CarService';
-import { CarClass } from './Types/CarClass';
-import RaceSignupComponent from './Components/RaceSignupComponent';
-import { Car } from './Types/Car';
+import EventListComponent from './Components/EventListComponent';
 
 function App() {
   const [opened, { toggle }] = useDisclosure();
   const [title, setTitle] = useState('JJC Racing Member Site');
-  const [carClasses, setCarClasses] = useState<CarClass[]>([]);
-  const [cars, setCars] = useState<Car[]>([]);
   const location = useLocation();
-  const carService = new CarService();
-  let props = {
-    carClasses: carClasses,
-    cars: cars
-  }
 
   useEffect(() => {
     switch (location.pathname) {
@@ -31,7 +21,7 @@ function App() {
       case '/profile':
         setTitle('Profile');
         break;
-      case '/signup':
+      case '/events':
         setTitle('Upcoming Events');
         break;
       case '/teamstats':
@@ -45,20 +35,6 @@ function App() {
         break;
     };
   }, [location]);
-
-  useEffect(() => {
-    carService.getAllCarClasses().then((data: {
-      result: CarClass[];
-    }) => {
-      setCarClasses(data.result);
-    });
-
-    carService.getAllCars().then((data: {
-      result: Car[];
-    }) => {
-      setCars(data.result);
-    });
-  }, []);  
 
   return (
     <AppShell
@@ -99,7 +75,7 @@ function App() {
             </Button>
           </AppShell.Section>
           <AppShell.Section>
-            <Button component='a' href='/signup' variant='subtle'>
+            <Button component='a' href='/events' variant='subtle'>
               Upcoming Events
             </Button>
           </AppShell.Section>
@@ -124,7 +100,7 @@ function App() {
             <Routes>
               <Route path='/' element={<HomePage />} />
               <Route path='/profile' element={<p>page not implemented</p>} />
-              <Route path='/signup' element={<RaceSignupComponent {...props}/>} />
+              <Route path='/events' element={<EventListComponent />} />
               <Route path='/teamstats' element={<p>page not implemented</p>} />
               <Route path='/dashboard' element={<StaffDashboard />} />
             </Routes>

@@ -11,6 +11,7 @@ export default function StaffDashboardComponent() {
     raceSignupService.getAllRegistrationRecords().then((data) => {
       const rows = data.result.map((element: RaceSignupParams) => (
         <Table.Tr key={element.firstName + element.lastName}>
+          <Table.Td>{element.eventName}</Table.Td>
           <Table.Td>{element.firstName + ' ' + element.lastName}</Table.Td>
           <Table.Td>{element.desiredClass}</Table.Td>
           <Table.Td>{element.desiredCar}</Table.Td>
@@ -27,6 +28,7 @@ export default function StaffDashboardComponent() {
       <Table>
       <Table.Thead>
         <Table.Tr>
+          <Table.Th>Event</Table.Th>
           <Table.Th>Name</Table.Th>
           <Table.Th>Desired Class</Table.Th>
           <Table.Th>Desired Car</Table.Th>
