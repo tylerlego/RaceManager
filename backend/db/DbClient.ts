@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 class DbClient {
   public async connect() {
-    const dbString = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017';
+    const dbString = process.env.DB_CONNECTION_STRING || '';
     const client = new MongoClient(dbString);
     try {
       const conn = await client.connect();

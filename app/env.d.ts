@@ -1,6 +1,6 @@
-// declare namespace NodeJS {
-//   export interface ProcessEnv {
-//     ACCREACT_APP_BASE_API_URLESS_TOKEN: string;
-//     ENVRIONMENT: "development" | "production";
-//   }
-// }
+declare namespace NodeJS {
+  export interface ProcessEnv {
+    REACT_APP_BASE_API_URL: string;
+    ENVRIONMENT: "development" | "production";
+  } 
+}
