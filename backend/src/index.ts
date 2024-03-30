@@ -5,6 +5,8 @@ const homeRouter = require('../routes/IndexRouter');
 const raceRegistrationRouter = require('../routes/RaceRegistrationRouter');
 const carRouter = require('../routes/CarsRouter');
 const raceEventRouter = require('../routes/RaceEventRouter');
+const authRouter = require('../routes/AuthRouter');
+const userRouter = require('../routes/UserRouter');
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ app.use('/api/home', homeRouter);
 app.use('/api/race/registration', raceRegistrationRouter);
 app.use('/api/car', carRouter);
 app.use('/api/events', raceEventRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running on port: ${port}`);
