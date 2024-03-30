@@ -15,11 +15,11 @@ app.use(cors<Request>());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use('/home', homeRouter);
-app.use('/race/registration', raceRegistrationRouter);
-app.use('/car', carRouter);
-app.use('/events', raceEventRouter);
+app.use('/api/home', homeRouter);
+app.use('/api/race/registration', raceRegistrationRouter);
+app.use('/api/car', carRouter);
+app.use('/api/events', raceEventRouter);
 
 app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  console.log(`[server]: Server is running on port: ${port}`);
 });
