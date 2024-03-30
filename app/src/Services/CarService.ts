@@ -7,7 +7,7 @@ const client = axios.create({
 class CarService {
   public async getAllCarClasses(): Promise<any> {
     try {
-      const response = await client.get('cars/classes');
+      const response = await client.get('car/classes');
       return response.data;
     } catch (error) {
       throw new Error('Failed to get car class data');
@@ -16,7 +16,7 @@ class CarService {
 
   public async getAllCars(): Promise<any> {
     try {
-      const response = await client.get('cars');
+      const response = await client.get('car');
       return response.data;
     } catch (error) {
       throw new Error('Failed to get car data');

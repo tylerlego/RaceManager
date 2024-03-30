@@ -1,12 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-const homeRouter = require('../routes/IndexRouter');
-const raceRegistrationRouter = require('../routes/RaceRegistrationRouter');
-const carRouter = require('../routes/CarsRouter');
-const raceEventRouter = require('../routes/RaceEventRouter');
-const authRouter = require('../routes/AuthRouter');
-const userRouter = require('../routes/UserRouter');
+const homeRouter = require('./routes/IndexRouter');
+const raceRegistrationRouter = require('./routes/RaceRegistrationRouter');
+const carRouter = require('./routes/CarsRouter');
+const raceEventRouter = require('./routes/RaceEventRouter');
+const authRouter = require('./routes/AuthRouter');
+const userRouter = require('./routes/UserRouter');
 
 dotenv.config();
 
