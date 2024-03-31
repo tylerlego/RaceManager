@@ -32,7 +32,7 @@ function App() {
         setTitle('Staff Dashboard');
         break;
       case '/creator':
-        setTitle('Creator');
+        setTitle('Event Creator');
         break;
       default:
         setTitle('JJC Racing Member Site');

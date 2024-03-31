@@ -62,13 +62,6 @@ export default function CreatorComponent() {
           data={carClasses.map((carClass) => ({ value: carClass._id, label: carClass.name}))}
           {...form.getInputProps('carClasses')}
         />
-        <MultiSelect
-          withAsterisk
-          withCheckIcon={false}
-          label="Participants"
-          data={[]}
-          {...form.getInputProps('participants')}
-        />
         <Group justify="flex-end" mt="xl">
           <Button type="submit" onSubmit={submitEventForm}>Submit</Button>
         </Group>
