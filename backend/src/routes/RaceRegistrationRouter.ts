@@ -1,20 +1,15 @@
 import express, { Request, Response } from 'express';
-import { DbClient } from "../db/DbClient";
+import mongoose from 'mongoose';
 
-const dbClient = new DbClient();
 const router = express.Router();
-
-const initCollection = async () => {
-  const connection = await dbClient.connect();
-  return await connection?.collection("RaceRegistration");
-};
+const RaceRegistration = require("../models/race-registration.model");
 
 router.post('/', async (req: Request, res: Response) => {
-  console.log('Race registration data received', req.body);
   try {
     // Save new registration
-    const collection = await initCollection();
-    const result = await collection?.insertOne(req.body);
+    const raceRegistration = mongoose.model('RaceRegistration', RaceRegistration.schema);
+    const newRaceRegistration = new raceRegistration(req.body);
+    const result = await newRaceRegistration.save();
     res.send({msg: 'Successfully submitted race registration!', result});
   } catch (error) {
     console.error('Failed to save', error);
@@ -25,12 +20,17 @@ router.post('/', async (req: Request, res: Response) => {
 router.get('/', async (req: Request, res: Response) => {
   try {
     // Get all registrations
-    const collection = await initCollection();
-    const result = await collection?.find().toArray();
+    const raceRegistration = mongoose.model('RaceRegistration', RaceRegistration.schema);
+    const result = await raceRegistration.
+      find().
+      populate("desiredClass").
+      populate("desiredCar").
+      populate("event").
+      exec();
     res.send({msg: 'Successfully got race registration data!', result});
   } catch (error) {
-    console.error('Failed to get', error);
-    res.status(500).send({msg: 'Failed to get', error}); 
+    console.error('Failed to get race registrations', error);
+    res.status(500).send({msg: 'Failed to get race registrations', error}); 
   }
 });
 

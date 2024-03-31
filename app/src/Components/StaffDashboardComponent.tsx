@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { RaceRegistrationService } from "../Services/RaceRegistrationService";
 import { Table } from "@mantine/core";
-import { RaceSignupParams } from "../Types/RaceSignup";
 
 export default function StaffDashboardComponent() {
   const raceSignupService = new RaceRegistrationService();
@@ -9,12 +8,12 @@ export default function StaffDashboardComponent() {
 
   useEffect(() => { 
     raceSignupService.getAllRegistrationRecords().then((data) => {
-      const rows = data.result.map((element: RaceSignupParams) => (
-        <Table.Tr key={element.firstName + element.lastName}>
-          <Table.Td>{element.eventName}</Table.Td>
+      const rows = data.result.map((element: any) => (
+        <Table.Tr key={element._id}>
+          <Table.Td>{element.event.name}</Table.Td>
           <Table.Td>{element.firstName + ' ' + element.lastName}</Table.Td>
-          <Table.Td>{element.desiredClass}</Table.Td>
-          <Table.Td>{element.desiredCar}</Table.Td>
+          <Table.Td>{element.desiredClass.name}</Table.Td>
+          <Table.Td>{element.desiredCar.name}</Table.Td>
         </Table.Tr>
       ));
 

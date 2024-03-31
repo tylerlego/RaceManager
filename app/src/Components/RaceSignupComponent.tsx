@@ -5,11 +5,12 @@ import { RaceRegistrationService } from '../Services/RaceRegistrationService';
 import { RaceSignupParams } from '../Types/RaceSignup';
 import { Car } from '../Types/Car';
 import { RaceEvent } from '../Types/RaceEvent';
+import { CarClass } from '../Types/CarClass';
 
 export default function RaceSignupComponent(props: {
-  carClasses: string[];
+  carClasses: CarClass[];
   cars: Car[];
-  raceEvent?: RaceEvent | null;
+  raceEvent: RaceEvent;
 }) {
   const [active, setActive] = useState(0);
   const [carOptions, setCarOptions] = useState<{ value: string; label: string }[]>([]);
@@ -20,6 +21,7 @@ export default function RaceSignupComponent(props: {
     lastName: '',
     desiredClass: '',
     desiredCar: '',
+    event: '',
   });
 
   const raceSignupService = new RaceRegistrationService();
@@ -30,6 +32,7 @@ export default function RaceSignupComponent(props: {
       lastName: '',
       desiredClass: '',
       desiredCar: '',
+      event: props.raceEvent._id || '',
     },
     validate: (values) => {
       if (active === 0) {
@@ -61,19 +64,21 @@ export default function RaceSignupComponent(props: {
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const submitRegistrationForm = async () => {
-    raceSignupParams.eventName = props.raceEvent?.name;
-    console.log('Submitting form: ', raceSignupParams);
-    await raceSignupService.addRaceRegistration(raceSignupParams);
-    window.location.href = '/';
+    if (props.raceEvent._id) {
+      raceSignupParams.event = props.raceEvent._id;
+      await raceSignupService.addRaceRegistration(raceSignupParams);
+      window.location.href = '/';
+    }
   };
 
   useEffect(() => {
-    const classes = props.raceEvent?.carClasses ? props.raceEvent.carClasses : [];
-    setCarClassOptions(classes.map((carClass) => { return { value: carClass, label: carClass } }));
-    setCarOptions(props.cars.filter((car) => {
-      return car.class === form.values.desiredClass;
-    }).map((car) => { return { value: car.name, label: car.name } }));
+    const classes = props.raceEvent.carClasses;
+    setCarClassOptions(classes.map((carClass) => { return { value: carClass._id, label: carClass.name } }));
 
+    const filteredCars = props.cars.filter((car) => {
+      return car.class._id === form.values.desiredClass;
+    });
+    setCarOptions(filteredCars.map((car) => { return { value: car._id, label: car.name } }));
   }, [props.carClasses, props.cars, form.values.desiredClass]);
 
   return (

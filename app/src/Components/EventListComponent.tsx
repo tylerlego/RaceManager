@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
 import { CarService } from "../Services/CarService";
 import { RaceEventService } from "../Services/RaceEventService";
-// import { CarClass } from "../Types/CarClass";
 import { Car } from "../Types/Car";
 import { RaceEvent } from "../Types/RaceEvent";
 import { Badge, Button, Card, Group, Image, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import RaceSignupComponent from "./RaceSignupComponent";
+import { CarClass } from "../Types/CarClass";
 
 export default function EventListComponent() {
-  const [carClasses, setCarClasses] = useState<string[]>([]);
+  const [carClasses, setCarClasses] = useState<CarClass[]>([]);
   const [cars, setCars] = useState<Car[]>([]);
   const [raceEevents, setRaceEvents] = useState<RaceEvent[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
-  const [selectedEvent, setSelectedEvent] = useState<RaceEvent | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<RaceEvent>({} as RaceEvent);
 
   const carService = new CarService();
   const eventService = new RaceEventService();
   
   useEffect(() => {
     carService.getAllCarClasses().then((data: {
-      result: string[];
+      result: CarClass[];
     }) => {
       setCarClasses(data.result);
     });
@@ -60,9 +60,9 @@ export default function EventListComponent() {
           >
             <Card.Section>
               <Image
-                src={require('../../public/imgs/' + event.imageURI)}
+                src={event.imageURI ? require('../../public/imgs/' + event.imageURI) : ''}
                 height={160}
-                alt="Sebring 12 Hour"
+                alt={event.name}
               />
             </Card.Section>
             <Group justify="space-between" mt="md" mb="xs">
@@ -86,7 +86,7 @@ export default function EventListComponent() {
         </div>
       ))}
       <Modal opened={opened} onClose={close} title={`Register For Event`}>
-        <RaceSignupComponent carClasses={carClasses} cars={cars} raceEvent={selectedEvent ? selectedEvent : null}/>
+        <RaceSignupComponent carClasses={carClasses} cars={cars} raceEvent={selectedEvent}/>
       </Modal>
     </div>
   );

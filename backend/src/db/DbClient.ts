@@ -1,5 +1,4 @@
 import { MongoClient } from 'mongodb';
-
 class DbClient {
   public async connect() {
     const dbString = process.env.DB_CONNECTION_STRING || '';
@@ -14,4 +13,3 @@ class DbClient {
 }
 
 export { DbClient };
-

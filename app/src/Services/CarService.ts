@@ -22,6 +22,15 @@ class CarService {
       throw new Error('Failed to get car data');
     }
   }
+
+  public async addCar(car: any): Promise<any> {
+    try {
+      const response = await client.post('car', car);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to add car');
+    }
+  }
 }
 
 export { CarService };

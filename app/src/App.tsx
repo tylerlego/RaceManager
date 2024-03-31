@@ -7,6 +7,7 @@ import StaffDashboard from './Components/StaffDashboardComponent';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './Components/HomeComponent';
 import EventListComponent from './Components/EventListComponent';
+import CreatorComponent from './Components/CreatorComponent';
 
 function App() {
   const [opened, { toggle }] = useDisclosure();
@@ -29,6 +30,9 @@ function App() {
         break;
       case '/dashboard':
         setTitle('Staff Dashboard');
+        break;
+      case '/creator':
+        setTitle('Creator');
         break;
       default:
         setTitle('JJC Racing Member Site');
@@ -89,6 +93,11 @@ function App() {
               Staff Dashboard
             </Button>
           </AppShell.Section>
+          <AppShell.Section>
+            <Button component='a' href='/creator' variant='subtle'>
+              Event Creator
+            </Button>
+          </AppShell.Section>
         </ButtonGroup>
       </AppShell.Navbar>
       <AppShell.Main>
@@ -103,6 +112,8 @@ function App() {
               <Route path='/events' element={<EventListComponent />} />
               <Route path='/teamstats' element={<p>page not implemented</p>} />
               <Route path='/dashboard' element={<StaffDashboard />} />
+              <Route path='/creator' element={<CreatorComponent />} />
+
             </Routes>
       </AppShell.Main>
     </AppShell>
