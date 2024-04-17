@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CarService } from "../Services/CarService";
-import { Button, Group, MultiSelect, NumberInput, Select, TextInput } from "@mantine/core";
+import { Button, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { RaceEventService } from "../Services/RaceEventService";
 
