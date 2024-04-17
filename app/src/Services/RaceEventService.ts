@@ -8,7 +8,7 @@ const client = axios.create({
 class RaceEventService {
   public async getAllEvents(): Promise<any> {
     try {
-      const response = await client.get('events');
+      const response = await client.get('api/events');
       return response.data;
     } catch (error) {
       throw new Error('Failed to get race event data');
@@ -17,7 +17,7 @@ class RaceEventService {
 
   public async addRaceEvent(raceEventData: RaceEvent): Promise<any> {
     try {
-      const response = await client.post('events/create', raceEventData);
+      const response = await client.post('api/events/create', raceEventData);
       return response.data;
     } catch (error) {
       throw new Error('Failed to create race event');

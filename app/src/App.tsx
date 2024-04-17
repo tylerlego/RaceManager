@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
 import '@mantine/core/styles.css';
 import { AppShell, Burger, Button, ButtonGroup } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -8,6 +7,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './Components/HomeComponent';
 import EventListComponent from './Components/EventListComponent';
 import CreatorComponent from './Components/CreatorComponent';
+import ProfileComponent from './Components/ProfileComponent';
 
 function App() {
   const [opened, { toggle }] = useDisclosure();
@@ -66,38 +66,25 @@ function App() {
       <AppShell.Navbar p="md">
         <ButtonGroup
           orientation='vertical'
-          style={{ textAlign: 'center' }}
         >
-          <AppShell.Section>
             <Button component='a' href='/' variant='subtle'>
               Home
             </Button>
-          </AppShell.Section>
-          <AppShell.Section>
             <Button component='a' href='/profile' variant='subtle'>
               Profile
             </Button>
-          </AppShell.Section>
-          <AppShell.Section>
             <Button component='a' href='/events' variant='subtle'>
               Upcoming Events
             </Button>
-          </AppShell.Section>
-          <AppShell.Section>
             <Button component='a' href='/teamstats' variant='subtle'>
               Team Results
             </Button>
-          </AppShell.Section>
-          <AppShell.Section>
             <Button component='a' href='/dashboard' variant='subtle'>
               Staff Dashboard
             </Button>
-          </AppShell.Section>
-          <AppShell.Section>
             <Button component='a' href='/creator' variant='subtle'>
               Event Creator
             </Button>
-          </AppShell.Section>
         </ButtonGroup>
       </AppShell.Navbar>
       <AppShell.Main>
@@ -108,12 +95,11 @@ function App() {
           </header>
             <Routes>
               <Route path='/' element={<HomePage />} />
-              <Route path='/profile' element={<p>page not implemented</p>} />
+              <Route path='/profile' element={<ProfileComponent />} />
               <Route path='/events' element={<EventListComponent />} />
               <Route path='/teamstats' element={<p>page not implemented</p>} />
               <Route path='/dashboard' element={<StaffDashboard />} />
               <Route path='/creator' element={<CreatorComponent />} />
-
             </Routes>
       </AppShell.Main>
     </AppShell>
