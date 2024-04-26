@@ -8,24 +8,11 @@ const client = axios.create({
 class CarService {
   public async getAllCarClasses(): Promise<any> {
     try {
-      const response = await fetch('http://localhost:4000/api/car/classes', {
+      const response = await client('api/car/classes', {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-        },
-        credentials: 'include',
+        withCredentials: true
       });
-      const classes = await response.json();
-      console.log("CLASS RES", classes)
-      // const response = await client('api/car/classes', {
-      //   method: 'GET',
-      //   withCredentials: true
-      // });
-      return response;
+      return response.data;
     } catch (error: any) {
       throw new Error('Failed to get car class data', error);
     }

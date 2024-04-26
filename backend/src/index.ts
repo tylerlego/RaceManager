@@ -27,8 +27,6 @@ const corsOrigins = [
 // console.log("cors origins", corsOrigins);
 console.log("TESTING UP 3");
 
-app.set("trust proxy", 1);
-
 app.use(cors({
   origin: true,
   credentials: true,
@@ -42,7 +40,6 @@ app.use(session({
   cookie: {
     maxAge: 60000 * 60 * 24 * 2, // 2 days
     sameSite: 'lax',
-    secure: false
   },
   name: 'discord.oauth2',
   resave: false,
