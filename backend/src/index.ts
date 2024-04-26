@@ -29,7 +29,7 @@ const corsOrigins = [
 console.log("cors origins", corsOrigins);
 
 app.use(cors({
-  origin: true,
+  origin: 'https://www.simteammanager.com',
   credentials: true,
 }));
 app.use(express.urlencoded({ extended: true }));
