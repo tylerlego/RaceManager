@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: process.env.ENVIRONMENT === 'prod' ? 
+  baseURL: process.env.REACT_APP_ENVIRONMENT === 'prod' ? 
     process.env.REACT_APP_BASE_API_URL : process.env.REACT_APP_BASE_API_URL_LOCAL
 });
 
