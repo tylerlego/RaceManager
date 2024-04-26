@@ -4,7 +4,7 @@ import { UserService } from "../../Services/UserService";
 export default function LoginComponent() {
   const userService = new UserService();
 
-  const baseURL = process.env.ENVIRONMENT === 'prod' ? 
+  const baseURL = process.env.REACT_APP_ENVIRONMENT === 'prod' ? 
       process.env.REACT_APP_BASE_API_URL : process.env.REACT_APP_BASE_API_URL_LOCAL;
 
   console.log("Base URL", baseURL);
