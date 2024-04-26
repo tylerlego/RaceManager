@@ -12,10 +12,11 @@ const authRouter = require('./routes/AuthRouter');
 const userRouter = require('./routes/UserRouter');
 const roleRoter = require('./routes/RoleRouter');
 const { isAuthenticated } = require('./middleware/auth');
-console.log("ENVS", process.env);
-
 dotenv.config();
 require('./strategies/discordstrategy');
+
+console.log("ENVS", process.env);
+
 
 const app: Express = express();
 const port = process.env.EXPRESS_PORT || 4000;
