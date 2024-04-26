@@ -37,7 +37,8 @@ app.use(express.json());
 app.use(session({
   secret: process.env.COOKIE_KEY,
   cookie: {
-    maxAge: 60000 * 60 * 24 * 2 // 2 days
+    maxAge: 60000 * 60 * 24 * 2, // 2 days
+    sameSite: 'none',
   },
   name: 'discord.oauth2',
   resave: false,
