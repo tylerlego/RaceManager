@@ -21,10 +21,11 @@ const app: Express = express();
 const port = process.env.EXPRESS_PORT || 4000;
 
 const corsOrigins = [
-  process.env.LOCAL_CLIENT_BASE_URL || '',
-  process.env.CLIENT_BASE_URL || '',
-  process.env.LOCAL_SERVER_BASE_URL || '',
-  process.env.SERVER_BASE_URL || '',
+  process.env.LOCAL_CLIENT_BASE_URL + '*' || '',
+  process.env.CLIENT_BASE_URL + '*' || '',
+  process.env.LOCAL_SERVER_BASE_URL + '*' || '',
+  process.env.SERVER_BASE_URL + '*' || '',
+  '*'
 ]
 console.log("cors origins", corsOrigins);
 
