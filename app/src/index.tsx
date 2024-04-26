@@ -4,19 +4,28 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { MantineProvider } from '@mantine/core';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './Store/store';
+import LoginComponent from './Components/Login/LoginComponent';
+import LoginErrorComponent from './Components/Login/LoginErrorComponent';
+import LoginSuccessComponent from './Components/Login/LoginSuccessComponent';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+const isAuthenticated = true;
+
 root.render(
   <React.StrictMode>
-    <MantineProvider defaultColorScheme='dark'>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </MantineProvider>
+    <Provider store={store}>
+      <MantineProvider defaultColorScheme='dark'>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </MantineProvider>
+    </Provider>
   </React.StrictMode>
 );
 
@@ -24,3 +33,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+// 

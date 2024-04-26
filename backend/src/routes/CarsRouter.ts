@@ -5,7 +5,7 @@ const router = express.Router();
 const Car = require("../models/car.model");
 const CarClass = require("../models/car-class.model");
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (req: any, res: Response) => {
   try {
     // Get all cars
     const car = mongoose.model('Car', Car.schema);
@@ -29,17 +29,17 @@ router.get('/classes', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', async (req: Request, res: Response) => {
-  try {
-    // Save new car
-    const car = mongoose.model('Car', Car.schema);
-    const newCar = new car(req.body);
-    const result = await newCar.save();
-    res.send({msg: 'Successfully saved car data!', result});
-  } catch (error) {
-    console.error('Failed to save', error);
-    res.status(500).send({msg: 'Failed to save', error}); 
-  }
-});
+// router.post('/', async (req: Request, res: Response) => {
+//   try {
+//     // Save new car
+//     const car = mongoose.model('Car', Car.schema);
+//     const newCar = new car(req.body);
+//     const result = await newCar.save();
+//     res.send({msg: 'Successfully saved car data!', result});
+//   } catch (error) {
+//     console.error('Failed to save', error);
+//     res.status(500).send({msg: 'Failed to save', error}); 
+//   }
+// });
 
 module.exports = router;

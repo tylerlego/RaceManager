@@ -79,7 +79,7 @@ export default function RaceSignupComponent(props: {
       return car.class._id === form.values.desiredClass;
     });
     setCarOptions(filteredCars.map((car) => { return { value: car._id, label: car.name } }));
-  }, [props.carClasses, props.cars, form.values.desiredClass]);
+  }, [props.carClasses, props.raceEvent.carClasses, props.cars, form.values.desiredClass]);
 
   return (
     <>

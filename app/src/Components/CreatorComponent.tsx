@@ -10,7 +10,7 @@ export default function CreatorComponent() {
     carService.getAllCarClasses().then((data) => {
       setCarClasses(data.result);
     });
-  }, []);
+  }, []); 
 
   const carService = new CarService();
   const raceEventService = new RaceEventService();
@@ -51,10 +51,10 @@ export default function CreatorComponent() {
           label="Event Description"
           {...form.getInputProps('description')}
         />
-        <TextInput
+        {/* <TextInput
           label="Image URI"
           {...form.getInputProps('imageURI')}
-        />
+        /> */}
         <MultiSelect
           withAsterisk
           withCheckIcon={false}

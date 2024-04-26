@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Request } from 'express';
 const router = express.Router();
 
 router.get('/', (req, res) => { 
-  res.send('Express + TypeScript Server@@@@@!!!!!!!!!!');
+  res.send(200);
 });
 
 module.exports = router;

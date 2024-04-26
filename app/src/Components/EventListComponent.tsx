@@ -19,22 +19,14 @@ export default function EventListComponent() {
   const eventService = new RaceEventService();
   
   useEffect(() => {
-    carService.getAllCarClasses().then((data: {
-      result: CarClass[];
-    }) => {
-      setCarClasses(data.result);
-    });
-
-    carService.getAllCars().then((data: {
-      result: Car[];
-    }) => {
-      setCars(data.result);
-    });
-
-    eventService.getAllEvents().then((data: {
-      result: RaceEvent[];
-    }) => {
-      setRaceEvents(data.result);
+    Promise.all([
+      carService.getAllCarClasses(),
+      carService.getAllCars(),
+      eventService.getAllEvents()
+    ]).then(([carClasses, cars, raceEvents]) => {
+      setCarClasses(carClasses.result);
+      setCars(cars.result);
+      setRaceEvents(raceEvents.result);
     });
   }, []);
 

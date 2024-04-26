@@ -2,13 +2,14 @@ import axios from 'axios';
 import { RaceEvent } from '../Types/RaceEvent';
 
 const client = axios.create({
-  baseURL: process.env.REACT_APP_BASE_API_URL,
+  baseURL: process.env.ENVIRONMENT === 'prod' ? 
+    process.env.REACT_APP_BASE_API_URL : process.env.REACT_APP_BASE_API_URL_LOCAL
 });
 
 class RaceEventService {
   public async getAllEvents(): Promise<any> {
     try {
-      const response = await client.get('api/events');
+      const response = await client.get('api/events', { withCredentials: true });
       return response.data;
     } catch (error) {
       throw new Error('Failed to get race event data');
@@ -17,7 +18,7 @@ class RaceEventService {
 
   public async addRaceEvent(raceEventData: RaceEvent): Promise<any> {
     try {
-      const response = await client.post('api/events/create', raceEventData);
+      const response = await client.post('api/events/create', raceEventData, { withCredentials: true });
       return response.data;
     } catch (error) {
       throw new Error('Failed to create race event');

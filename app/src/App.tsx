@@ -8,16 +8,21 @@ import HomePage from './Components/HomeComponent';
 import EventListComponent from './Components/EventListComponent';
 import CreatorComponent from './Components/CreatorComponent';
 import ProfileComponent from './Components/ProfileComponent';
+import LoginComponent from './Components/Login/LoginComponent';
+import LoginSuccessComponent from './Components/Login/LoginSuccessComponent';
+import LoginErrorComponent from './Components/Login/LoginErrorComponent';
+import HomeComponent from './Components/HomeComponent';
 
 function App() {
   const [opened, { toggle }] = useDisclosure();
   const [title, setTitle] = useState('JJC Racing Member Site');
   const location = useLocation();
+  const isAuthenticated = true;
 
   useEffect(() => {
     switch (location.pathname) {
       case '/':
-        setTitle('JJC Racing Member Site');
+        setTitle('Home');
         break;
       case '/profile':
         setTitle('Profile');
@@ -35,7 +40,7 @@ function App() {
         setTitle('Event Creator');
         break;
       default:
-        setTitle('JJC Racing Member Site');
+        setTitle('');
         break;
     };
   }, [location]);
@@ -50,58 +55,12 @@ function App() {
       }}
       padding="md"
     >
-      <AppShell.Header  >
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          hiddenFrom="sm"
-          size="sm"
-        />
-        <div>
-          <p>
-            JJC Racing Member Site
-          </p>
-        </div>
-      </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <ButtonGroup
-          orientation='vertical'
-        >
-            <Button component='a' href='/' variant='subtle'>
-              Home
-            </Button>
-            <Button component='a' href='/profile' variant='subtle'>
-              Profile
-            </Button>
-            <Button component='a' href='/events' variant='subtle'>
-              Upcoming Events
-            </Button>
-            <Button component='a' href='/teamstats' variant='subtle'>
-              Team Results
-            </Button>
-            <Button component='a' href='/dashboard' variant='subtle'>
-              Staff Dashboard
-            </Button>
-            <Button component='a' href='/creator' variant='subtle'>
-              Event Creator
-            </Button>
-        </ButtonGroup>
-      </AppShell.Navbar>
-      <AppShell.Main>
-          <header className="App-header">
-            <h1>
-              {title}
-            </h1>
-          </header>
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/profile' element={<ProfileComponent />} />
-              <Route path='/events' element={<EventListComponent />} />
-              <Route path='/teamstats' element={<p>page not implemented</p>} />
-              <Route path='/dashboard' element={<StaffDashboard />} />
-              <Route path='/creator' element={<CreatorComponent />} />
-            </Routes>
-      </AppShell.Main>
+      <Routes>
+        <Route path='/' element={<LoginComponent />} />
+        <Route path='/login/success' element={<LoginSuccessComponent />} />
+        <Route path='/login/error' element={<LoginErrorComponent />} />
+        <Route path='/home/*' element={<HomeComponent />} />
+      </Routes>
     </AppShell>
   );
 }
