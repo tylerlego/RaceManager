@@ -7,9 +7,6 @@ export default function LoginComponent() {
   const baseURL = process.env.REACT_APP_ENVIRONMENT === 'prod' ? 
       process.env.REACT_APP_BASE_API_URL : process.env.REACT_APP_BASE_API_URL_LOCAL;
 
-  console.log("Base URL", baseURL);
-  console.log("environment", process.env.REACT_APP_ENVIRONMENT)
-
   const fetchUser = async () => {
     const res = await userService.getAuthUser().catch((error) => {
       console.error('Failed to get user', error);
