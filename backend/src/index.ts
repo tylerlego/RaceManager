@@ -18,6 +18,7 @@ require('./strategies/discordstrategy');
 
 const app: Express = express();
 const port = process.env.EXPRESS_PORT || 4000;
+console.log("ENVS", process.env);
 app.use(cors({
   origin: [
     process.env.LOCAL_CLIENT_BASE_URL || '',

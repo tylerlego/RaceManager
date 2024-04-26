@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for stm1-winter-rain-8179 on 2024-04-26T14:04:04-04:00
+# fly.toml app configuration file generated for stm1 on 2024-04-26T14:45:39-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'stm1-winter-rain-8179'
+app = 'stm1'
 primary_region = 'iad'
 
 [build]
