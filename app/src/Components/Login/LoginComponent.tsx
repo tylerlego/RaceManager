@@ -32,7 +32,7 @@ export default function LoginComponent() {
       timer = setInterval(async () => {
         if (newWindow.closed) {
           if (timer) clearInterval(timer);
-          const user = fetchUser();
+          const user = await fetchUser();
           console.log("User", user);
           window.location.href = '/home';
         }
