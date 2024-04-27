@@ -57,7 +57,7 @@ app.use(passport.session());
 app.use(passport.authenticate('session'));
 
 app.use('/api/auth', authRouter);
-app.use('/api/home', isAuthenticated, homeRouter);
+app.use('/api/home', homeRouter);
 app.use('/api/race/registration', isAuthenticated, raceRegistrationRouter);
 app.use('/api/car', isAuthenticated, carRouter);
 app.use('/api/events', isAuthenticated, raceEventRouter);
