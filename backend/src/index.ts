@@ -12,6 +12,8 @@ const authRouter = require('./routes/AuthRouter');
 const userRouter = require('./routes/UserRouter');
 const roleRoter = require('./routes/RoleRouter');
 const { isAuthenticated } = require('./middleware/auth');
+const cookieSession = require('cookie-session');
+
 dotenv.config();
 require('./strategies/discordstrategy');
 
@@ -35,16 +37,38 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());  
 
-app.use(session({
-  secret: process.env.COOKIE_KEY,
-  cookie: {
-    maxAge: 60000 * 60 * 24 * 2, // 2 days
-    sameSite: 'none',
-  },
-  name: 'discord.oauth2',
-  // resave: false,
-  // saveUninitialized: false,
-}));
+// app.use(session({
+//   secret: process.env.COOKIE_KEY,
+//   cookie: {
+//     maxAge: 60000 * 60 * 24 * 2, // 2 days
+//     sameSite: 'none',
+//   },
+//   name: 'discord.oauth2',
+//   // resave: false,
+//   // saveUninitialized: false,
+// }));
+
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [process.env.COOKIE_KEY],
+  })
+);
+
+
+app.use(function(request: any, response: any, next) {
+  if (request.session && !request.session.regenerate) {
+      request.session.regenerate = (cb: any) => {
+          cb()
+      }
+  }
+  if (request.session && !request.session.save) {
+      request.session.save = (cb: any) => {
+          cb()
+      }
+  }
+  next()
+})
 
 db.then((res: any) => {
   console.log("DB CLIENT CONNECTED:", res?.connection.host);
