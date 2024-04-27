@@ -12,12 +12,23 @@ import LoginComponent from './Components/Login/LoginComponent';
 import LoginSuccessComponent from './Components/Login/LoginSuccessComponent';
 import LoginErrorComponent from './Components/Login/LoginErrorComponent';
 import HomeComponent from './Components/HomeComponent';
+import { IndexService } from './Services/IndexService';
+import { get } from 'http';
 
 function App() {
+  const indexService = new IndexService();
   const [opened, { toggle }] = useDisclosure();
   const [title, setTitle] = useState('JJC Racing Member Site');
   const location = useLocation();
   const isAuthenticated = true;
+
+
+  const getStatus = async () => {
+    const res = await indexService.getServerStatus();
+    console.log('Server status:', res);
+  };
+
+  getStatus();
 
   useEffect(() => {
     switch (location.pathname) {

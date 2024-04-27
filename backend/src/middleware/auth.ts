@@ -1,4 +1,5 @@
 module.exports.isAuthenticated = (req: any, res: any, next: any) => {
+  // return next();
   if (req.user) {
     return next();
   }
