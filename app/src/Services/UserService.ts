@@ -2,13 +2,14 @@ import axios from 'axios';
 
 const client = axios.create({
   baseURL: process.env.REACT_APP_ENVIRONMENT === 'prod' ? 
-    process.env.REACT_APP_BASE_API_URL : process.env.REACT_APP_BASE_API_URL_LOCAL
+    process.env.REACT_APP_BASE_API_URL : process.env.REACT_APP_BASE_API_URL_LOCAL,
+    withCredentials: true,
 });
 
 class UserService {
   public async getUserById(userId: number): Promise<any> {
     try {
-      const user = await client.get(`api/user/${userId}`, {withCredentials: true});
+      const user = await client.get(`api/user/${userId}`);
       if (!user) {
         throw new Error('User not found');
       } else {
@@ -34,7 +35,7 @@ class UserService {
 
   public async getAuthUser(): Promise<any> {
     try {
-      const user = await client.get(`api/user/auth-user`, {withCredentials: true});
+      const user = await client.get(`api/user/auth-user`);
       if (!user) {
         throw new Error('User not found');
       } else {

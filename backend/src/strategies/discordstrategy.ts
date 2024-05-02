@@ -29,7 +29,6 @@ passport.use(new DiscordStrategy({
   if (profile.guilds.some((guild: any) => guild.id === process.env.JJC_GUILD_ID)) {
     try {
       const user: IUser | null = await User.findOne({ discordId: profile.id });
-
       if (user) {
         done(null, user);
       } else {
@@ -38,6 +37,8 @@ passport.use(new DiscordStrategy({
           discordId: profile.id,
           discordUsername: profile.username,
           discordAvatar: `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
         });
         done(null, newUser);
       }

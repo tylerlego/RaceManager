@@ -20,14 +20,13 @@ require('./strategies/discordstrategy');
 const app: Express = express();
 const port = process.env.EXPRESS_PORT || 4000;
 
-const corsOrigins = [
-  process.env.LOCAL_CLIENT_BASE_URL || '',
-  process.env.CLIENT_BASE_URL || '',
-  process.env.LOCAL_SERVER_BASE_URL || '',
-  process.env.SERVER_BASE_URL || '',
-]
+// const corsOrigins = [
+//   process.env.LOCAL_CLIENT_BASE_URL || '',
+//   process.env.CLIENT_BASE_URL || '',
+//   process.env.LOCAL_SERVER_BASE_URL || '',
+//   process.env.SERVER_BASE_URL || '',
+// ]
 // console.log("cors origins", corsOrigins);
-console.log("TESTING UP 3");
 
 app.use(cors({
   origin: true,
@@ -37,38 +36,23 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());  
 
-// app.use(session({
-//   secret: process.env.COOKIE_KEY,
-//   cookie: {
-//     maxAge: 60000 * 60 * 24 * 2, // 2 days
-//     sameSite: 'none',
-//   },
-//   name: 'discord.oauth2',
-//   // resave: false,
-//   // saveUninitialized: false,
-// }));
+const sessionConfig: any = {
+  secret: process.env.COOKIE_KEY,
+  cookie: {
+    maxAge: 60000 * 60 * 24 * 30, // 30 days
+  },
+  name: 'discord.oauth2',
+  resave: false,
+  saveUninitialized: false,
+};
 
-app.use(
-  cookieSession({
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: [process.env.COOKIE_KEY],
-  })
-);
+if (process.env.ENVIRONMENT === 'prod') {
+  app.set('trust proxy', 1);
+  sessionConfig.cookie.secure = true;
+  sessionConfig.cookie.sameSite = 'none';
+}
 
-
-app.use(function(request: any, response: any, next) {
-  if (request.session && !request.session.regenerate) {
-      request.session.regenerate = (cb: any) => {
-          cb()
-      }
-  }
-  if (request.session && !request.session.save) {
-      request.session.save = (cb: any) => {
-          cb()
-      }
-  }
-  next()
-})
+app.use(session(sessionConfig));
 
 db.then((res: any) => {
   console.log("DB CLIENT CONNECTED:", res?.connection.host);

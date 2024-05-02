@@ -6,6 +6,8 @@ interface IUser {
   discordId: string;
   discordUsername: string;
   discordAvatar: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 const User = mongoose.model(
@@ -22,6 +24,12 @@ const User = mongoose.model(
       type: String,
     },
     discordAvatar: {
+      type: String,
+    },
+    accessToken: {
+      type: String,
+    },
+    refreshToken: {
       type: String,
     },
   }, { collection: 'User' })

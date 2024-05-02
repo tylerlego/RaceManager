@@ -24,9 +24,13 @@ router.get('/login/discord', passport.authenticate('discord'));
 
 router.get('/redirect/discord', passport.authenticate('discord', {
   failureRedirect: discordFailureRedirect,
-  successRedirect: discordSuccessRedirect,
-}), (req: any, res: any) => {
-  res.send('Successfully logged in');
-});
+  // successRedirect: discordSuccessRedirect
+}), 
+  (req: any, res: any) => {
+    console.log("AuthRouter /redirect/discord: req.query", req.query);
+    console.log("AuthRouter /redirect/discord: req.user", req.user);
+    res.redirect(discordSuccessRedirect);
+  }
+);
 
 module.exports = router;

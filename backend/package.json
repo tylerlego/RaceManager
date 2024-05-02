@@ -16,6 +16,8 @@
   "dependencies": {
     "@types/cors": "^2.8.17",
     "axios": "^1.6.8",
+    "body-parser": "^1.20.2",
+    "connect": "^3.7.0",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
     "discord.js": "^14.14.1",

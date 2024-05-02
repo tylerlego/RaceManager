@@ -58,7 +58,7 @@ export default function HomeComponent() {
           </h1>
         </header>
         <Routes>
-          <Route path='/' element={<p>JJC RACING IS DOPE AF</p>} />
+          <Route path='/' element={<p>JJC RACING</p>} />
           <Route path='/profile' element={<ProfileComponent />} />
           <Route path='/events' element={<EventListComponent />} />
           <Route path='/teamstats' element={<p>page not implemented</p>} />
