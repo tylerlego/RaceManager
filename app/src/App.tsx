@@ -1,78 +1,22 @@
-import React, { useEffect, useState } from 'react';
 import '@mantine/core/styles.css';
-import { AppShell, Burger, Button, ButtonGroup } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import StaffDashboard from './Components/StaffDashboardComponent';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import HomePage from './Components/HomeComponent';
-import EventListComponent from './Components/EventListComponent';
-import CreatorComponent from './Components/CreatorComponent';
-import ProfileComponent from './Components/ProfileComponent';
+import { Route, Routes } from 'react-router-dom';
 import LoginComponent from './Components/Login/LoginComponent';
 import LoginSuccessComponent from './Components/Login/LoginSuccessComponent';
 import LoginErrorComponent from './Components/Login/LoginErrorComponent';
 import HomeComponent from './Components/HomeComponent';
-import { IndexService } from './Services/IndexService';
-import { get } from 'http';
-
-function App() {
-  const indexService = new IndexService();
-  const [opened, { toggle }] = useDisclosure();
-  const [title, setTitle] = useState('JJC Racing Member Site');
-  const location = useLocation();
-  const isAuthenticated = true;
+import PrivateRoutes from './Routes/ProtectedRoutes';
 
 
-  const getStatus = async () => {
-    const res = await indexService.getServerStatus();
-    console.log('Server status:', res);
-  };
-
-  getStatus();
-
-  useEffect(() => {
-    switch (location.pathname) {
-      case '/':
-        setTitle('Home');
-        break;
-      case '/profile':
-        setTitle('Profile');
-        break;
-      case '/events':
-        setTitle('Upcoming Events');
-        break;
-      case '/teamstats':
-        setTitle('Team Results');
-        break;
-      case '/dashboard':
-        setTitle('Staff Dashboard');
-        break;
-      case '/creator':
-        setTitle('Event Creator');
-        break;
-      default:
-        setTitle('');
-        break;
-    };
-  }, [location]);
-
+function App(){
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: 250,
-        breakpoint: 'sm',
-        collapsed: { mobile: !opened },
-      }}
-      padding="md"
-    >
-      <Routes>
-        <Route path='/' element={<LoginComponent />} />
-        <Route path='/login/success' element={<LoginSuccessComponent />} />
-        <Route path='/login/error' element={<LoginErrorComponent />} />
-        <Route path='/home/*' element={<HomeComponent />} />
-      </Routes>
-    </AppShell>
+    <Routes>
+      <Route element={<PrivateRoutes />}> 
+        <Route path='/*' element={<HomeComponent />} />
+      </Route>
+      <Route path='/login' element={<LoginComponent />} />
+      <Route path='/login/success' element={<LoginSuccessComponent />} />
+      <Route path='/login/error' element={<LoginErrorComponent />} /> 
+    </Routes>
   );
 }
 

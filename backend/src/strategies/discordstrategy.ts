@@ -6,19 +6,6 @@ const discordCallbackURL = process.env.ENVIRONMENT === 'prod' ?
   `${process.env.SERVER_BASE_URL}${process.env.DISCORD_REDIRECT_PATH}` :
   `${process.env.LOCAL_SERVER_BASE_URL}${process.env.DISCORD_REDIRECT_PATH}`;
 
-passport.serializeUser((user: IUser, done: any) => {
-  done(null, user._id);
-});
-
-passport.deserializeUser(async (id: any, done: any) => {
-  const user = await User.findById(id).catch((err) => {
-    console.log("Error deserializing", err);
-    done(err, null);
-  });
-
-  if (user) done(null, user);
-});
-
 passport.use(new DiscordStrategy({
   clientID: process.env.DISCORD_CLIENT_ID,
   clientSecret: process.env.DISCORD_CLIENT_SECRET,
@@ -26,6 +13,9 @@ passport.use(new DiscordStrategy({
   scope: ['identify', 'email', 'guilds', 'guilds.members.read'],
   passReqToCallback: true,
 }, async (req: any, accessToken: string, refreshToken: string, profile: any, done: any) => {
+  // console.log("PROFILE", profile);
+  console.log("ACCESS TOKEN", accessToken);
+  console.log("REFRESH TOKEN", refreshToken);
   if (profile.guilds.some((guild: any) => guild.id === process.env.JJC_GUILD_ID)) {
     try {
       const user: IUser | null = await User.findOne({ discordId: profile.id });
@@ -47,4 +37,16 @@ passport.use(new DiscordStrategy({
       return done(err, null);
     }
   }
+
+  passport.serializeUser((user: IUser, done: any) => {
+    process.nextTick(() => {
+      return done(null, user);
+    });
+  });
+  
+  passport.deserializeUser(async (user: IUser, done: any) => {
+    process.nextTick(async () => {
+      return done(null, user);
+    });
+  });
 }));

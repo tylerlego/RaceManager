@@ -1,16 +1,10 @@
 import express from 'express';
 import { User } from '../models/user.model';
 const router = express.Router();
-const { isAuthenticated } = require('../middleware/auth');
 
 // Create a new user
 router.post('/create', async (req, res) => {
   // ...
-});
-
-// Get auth user
-router.get('/auth-user', (req: any, res) => {
-  res.json(req.user);
 });
 
 // Get a user by ID

@@ -35,7 +35,7 @@ class UserService {
 
   public async getAuthUser(): Promise<any> {
     try {
-      const user = await client.get(`api/user/auth-user`);
+      const user = await client.get(`api/auth/auth-user`);
       if (!user) {
         throw new Error('User not found');
       } else {

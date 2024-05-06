@@ -1,4 +1,7 @@
 {
+  "name": "sim-team-manager",
+  "version": "0.0.2",
+  "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express-session": "^1.18.0",

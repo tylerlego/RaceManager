@@ -3,7 +3,6 @@ const router = express.Router();
 const passport = require('passport');
 const { Client, GatewayIntentBits } = require('discord.js');
 const dotenv = require('dotenv');
-const { isAuthenticated } = require('../middleware/auth');
 dotenv.config();
 
 const discordClient = new Client({
@@ -24,13 +23,12 @@ router.get('/login/discord', passport.authenticate('discord'));
 
 router.get('/redirect/discord', passport.authenticate('discord', {
   failureRedirect: discordFailureRedirect,
-  // successRedirect: discordSuccessRedirect
-}), 
-  (req: any, res: any) => {
-    console.log("AuthRouter /redirect/discord: req.query", req.query);
-    console.log("AuthRouter /redirect/discord: req.user", req.user);
-    res.redirect(discordSuccessRedirect);
-  }
-);
+  successRedirect: discordSuccessRedirect 
+}));
+
+// Get auth user
+router.get('/auth-user', (req: any, res) => {
+  res.json(req.user);
+});
 
 module.exports = router;

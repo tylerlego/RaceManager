@@ -4,7 +4,7 @@ import ProfileComponent from "./ProfileComponent";
 import EventListComponent from "./EventListComponent";
 import StaffDashboardComponent from "./StaffDashboardComponent";
 import CreatorComponent from "./CreatorComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function HomeComponent() {
@@ -12,8 +12,42 @@ export default function HomeComponent() {
   const [title, setTitle] = useState('JJC Racing Member Site');
   const location = useLocation();
 
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/':
+        setTitle('Home');
+        break;
+      case '/profile':
+        setTitle('Profile');
+        break;
+      case '/events':
+        setTitle('Upcoming Events');
+        break;
+      case '/teamstats':
+        setTitle('Team Results');
+        break;
+      case '/dashboard':
+        setTitle('Staff Dashboard');
+        break;
+      case '/creator':
+        setTitle('Event Creator');
+        break;
+      default:
+        setTitle('');
+        break;
+    };
+  }, [location]);
+  
   return (
-    <>
+    <AppShell
+    header={{ height: 60 }}
+    navbar={{
+      width: 250,
+      breakpoint: 'sm',
+      collapsed: { mobile: !opened },
+    }}
+    padding="md"
+  >
       <AppShell.Header >
         <Burger
           opened={opened}
@@ -21,32 +55,32 @@ export default function HomeComponent() {
           hiddenFrom="sm"
           size="sm"
         />
-        <div>
-          <p>
-            JJC Racing Member Site
-          </p>
-        </div>
+        JJC Racing
+        {/* <span>
+          <Avatar src={process.env.REACT_APP_GUILD_ICON} alt="no image here" />
+        </span> */}
+
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <ButtonGroup
           orientation='vertical'
         >
-            <Button component='a' href='/home' variant='subtle'>
+            <Button component='a' href='/' variant='subtle'>
               Home
             </Button>
-            <Button component='a' href='/home/profile' variant='subtle'>
+            <Button component='a' href='/profile' variant='subtle'>
               Profile
             </Button>
-            <Button component='a' href='/home/events' variant='subtle'>
+            <Button component='a' href='/events' variant='subtle'>
               Upcoming Events
             </Button>
-            <Button component='a' href='/home/teamstats' variant='subtle'>
+            <Button component='a' href='/teamstats' variant='subtle'>
               Team Results
             </Button>
-            <Button component='a' href='/home/dashboard' variant='subtle'>
+            <Button component='a' href='/dashboard' variant='subtle'>
               Staff Dashboard
             </Button>
-            <Button component='a' href='/home/creator' variant='subtle'>
+            <Button component='a' href='/creator' variant='subtle'>
               Event Creator
             </Button> 
         </ButtonGroup>
@@ -67,6 +101,6 @@ export default function HomeComponent() {
           <Route path='*' element={<p>404 not found</p>} />
         </Routes>
       </AppShell.Main>
-  </>
+    </AppShell>
   );
 }

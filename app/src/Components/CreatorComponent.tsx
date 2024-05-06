@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { CarService } from "../Services/CarService";
-import { Button, Group, MultiSelect, TextInput } from "@mantine/core";
+import { Button, FileInput, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { RaceEventService } from "../Services/RaceEventService";
 
 export default function CreatorComponent() {
   const [carClasses, setCarClasses] = useState<any[]>([]);
+  const carService = new CarService();
+  const raceEventService = new RaceEventService();
+
   useEffect(() => {
     carService.getAllCarClasses().then((data) => {
       setCarClasses(data.result);
     });
-  }, []); 
+  }); 
 
-  const carService = new CarService();
-  const raceEventService = new RaceEventService();
+
   
   const form = useForm({
     initialValues: {
@@ -51,10 +53,10 @@ export default function CreatorComponent() {
           label="Event Description"
           {...form.getInputProps('description')}
         />
-        {/* <TextInput
-          label="Image URI"
+        <FileInput
+          label="Image"
           {...form.getInputProps('imageURI')}
-        /> */}
+        />
         <MultiSelect
           withAsterisk
           withCheckIcon={false}
