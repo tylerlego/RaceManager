@@ -1,7 +1,7 @@
-import { AppShell, Avatar, Burger, Button, ButtonGroup, Center, Container, Group, Menu, NavLink, Tabs } from "@mantine/core";
-import { Navigate, Route, Routes, useLocation } from "react-router";
+import { AppShell, Burger, Button, ButtonGroup, Container, Group, Image } from "@mantine/core";
+import { Route, Routes, useLocation } from "react-router";
 import ProfileComponent from "./ProfileComponent";
-import EventListComponent from "./EventListComponent";
+import EventListComponent from "./Event/EventListComponent";
 import StaffDashboardComponent from "./StaffDashboardComponent";
 import CreatorComponent from "./CreatorComponent";
 import { useEffect, useState } from "react";
@@ -67,17 +67,20 @@ export default function HomeComponent() {
     return (
       <AppShell
         header={{ height: 60 }}  
-        navbar={{ width: 300, breakpoint: 'xl', collapsed: {mobile: !opened, desktop: true}}}
+        navbar={{ width: 300, breakpoint: 'lg', collapsed: {mobile: !opened, desktop: true}}}
         padding="md"
       >
         <AppShell.Header className={classes.header}>
           <Container size="md">
             <div className={classes.inner}>
+              <a href='/' className={classes.logo}>
+                <Image src={require('../imgs/jjc_text_logo.png')} alt="JJC Racing" width={50} height={30} />
+              </a>
               <Group gap={5} visibleFrom="sm">
                 {items}
               </Group>
-              <Burger  opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
-              <p><Avatar size="md" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /></p>
+              <Burger className={classes.burger} opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
+              {/* <p><Avatar size="md" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /></p> */}
             </div>
           </Container>
         </AppShell.Header>

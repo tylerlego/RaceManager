@@ -23,7 +23,7 @@ export default function StaffDashboardComponent() {
 
   return (
     <div>
-      <p>View and manage all  upcoming events</p>
+      <p>View and manage all upcoming events</p>
       <Table>
       <Table.Thead>
         <Table.Tr>
