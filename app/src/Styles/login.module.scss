@@ -1,0 +1,46 @@
+/* ------------------------------------------
+*  Responsive Grid Media Queries - 1280, 1024, 768, 480
+*   1280-1024   - desktop (default grid)
+*   1024-768    - tablet landscape
+*   768-480     - tablet 
+*   480-less    - phone landscape & smaller
+* --------------------------------------------
+*/
+
+.loginCard {
+  background-color: var(--mantine-color-yellow-filled);
+  color: var(--mantine-color-black);
+
+  @media all and (min-width: 1024px) {
+    width: 800px;
+  }
+
+  @media all and (min-width: 768px) and (max-width: 1024px) {
+    width: 600px;
+  }
+  
+  @media all and (min-width: 480px) and (max-width: 768px) {
+    width: 100%;
+
+  }
+  
+  @media all and (max-width: 480px) { 
+    width: 100%;
+  }
+}
+
+.loginText {
+  font-weight: 600;
+}
+
+.loginButton {
+  color: var(--mantine-color-black) !important;
+  font-weight: 600;
+  background-color: var(--mantine-color-gray-3  ) !important;
+
+}
+
+.loginButton:hover {
+  background-color: var(--mantine-color-black) !important;
+  color: var(--mantine-color-yellow-filled) !important;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { UserService } from '../Services/UserService';
+import { Loader, LoadingOverlay } from '@mantine/core';
 
 export default function PrivateRoutes() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -8,7 +9,6 @@ export default function PrivateRoutes() {
   const userService = new UserService();
   const isAuth = async () => {
     await userService.getAuthUser().then((res: any) => {
-      console.log("USER?", res);
       if (res.status === 200 && res.data) setIsLoggedIn(true)
       setIsChecking(false);
       return;
@@ -19,7 +19,9 @@ export default function PrivateRoutes() {
     isAuth();
   }, [isLoggedIn]);
 
-  if(isChecking) return <p>Checking for user....</p>
+  if(isChecking) return (
+    <LoadingOverlay visible={true} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+  )
 
   return (
     isLoggedIn ? <Outlet/> : <Navigate to='/login'/>

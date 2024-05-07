@@ -4,7 +4,7 @@ export default function LoginSuccessComponent() {
   useEffect(() => {
     const redirectTimeout = setTimeout(() => {
       window.close();
-    }, 1500);
+    }, 1);
 
     return () => {
       clearTimeout(redirectTimeout);

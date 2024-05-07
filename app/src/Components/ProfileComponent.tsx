@@ -8,7 +8,6 @@ export default function ProfileComponent() {
 
     useEffect(() => {
       userService.getAuthUser().then((user) => {
-        console.log("USER", user.data);
         setUser(user.data);
       });
     }, []);

@@ -1,18 +1,43 @@
-import { AppShell, Burger, Button, ButtonGroup } from "@mantine/core";
-import { Route, Routes, useLocation } from "react-router";
+import { AppShell, Avatar, Burger, Button, ButtonGroup, Center, Container, Group, Menu, NavLink, Tabs } from "@mantine/core";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import ProfileComponent from "./ProfileComponent";
 import EventListComponent from "./EventListComponent";
 import StaffDashboardComponent from "./StaffDashboardComponent";
 import CreatorComponent from "./CreatorComponent";
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
+import classes from '../Styles/header-menu.module.scss';
 
+const links = [
+  { link: '/', label: 'Home' },
+  { link: '/profile', label: 'Profile' },
+  { link: '/events', label: 'Events' },
+  { link: '/teamstats', label: 'Team Stats' },
+  { link: '/dashboard', label: 'Staff Dashboard' },
+  { link: '/creator', label: 'Event Creator', links: [] },
+];
 export default function HomeComponent() {
   const [opened, { toggle }] = useDisclosure();
-  const [title, setTitle] = useState('JJC Racing Member Site');
+  const [title, setTitle] = useState('');
+  const [active, setActive] = useState('');
   const location = useLocation();
 
+  const items = links.map((link) => {
+    return (
+      <Button 
+        component="a"
+        data-active={active === link.link || undefined} 
+        key={link.label} 
+        href={link.link}
+        className={classes.link}
+      >
+        {link.label}
+      </Button>
+    );
+  });
+
   useEffect(() => {
+    setActive(location.pathname);
     switch (location.pathname) {
       case '/':
         setTitle('Home');
@@ -37,70 +62,64 @@ export default function HomeComponent() {
         break;
     };
   }, [location]);
-  
-  return (
-    <AppShell
-    header={{ height: 60 }}
-    navbar={{
-      width: 250,
-      breakpoint: 'sm',
-      collapsed: { mobile: !opened },
-    }}
-    padding="md"
-  >
-      <AppShell.Header >
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          hiddenFrom="sm"
-          size="sm"
-        />
-        JJC Racing
-        {/* <span>
-          <Avatar src={process.env.REACT_APP_GUILD_ICON} alt="no image here" />
-        </span> */}
 
-      </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <ButtonGroup
-          orientation='vertical'
-        >
-            <Button component='a' href='/' variant='subtle'>
+  if (title) {
+    return (
+      <AppShell
+        header={{ height: 60 }}  
+        navbar={{ width: 300, breakpoint: 'xl', collapsed: {mobile: !opened, desktop: true}}}
+        padding="md"
+      >
+        <AppShell.Header className={classes.header}>
+          <Container size="md">
+            <div className={classes.inner}>
+              <Group gap={5} visibleFrom="sm">
+                {items}
+              </Group>
+              <Burger  opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
+              <p><Avatar size="md" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /></p>
+            </div>
+          </Container>
+        </AppShell.Header>
+        <AppShell.Navbar p="md">
+          <ButtonGroup orientation='vertical'>
+            <Button className={classes.sideNavLink} component='a' href='/' variant='subtle'>
               Home
             </Button>
-            <Button component='a' href='/profile' variant='subtle'>
+            <Button className={classes.sideNavLink} component='a' href='/profile' variant='subtle'>
               Profile
             </Button>
-            <Button component='a' href='/events' variant='subtle'>
+            <Button className={classes.sideNavLink} component='a' href='/events' variant='subtle'>
               Upcoming Events
             </Button>
-            <Button component='a' href='/teamstats' variant='subtle'>
+            <Button className={classes.sideNavLink} component='a' href='/teamstats' variant='subtle'>
               Team Results
             </Button>
-            <Button component='a' href='/dashboard' variant='subtle'>
+            <Button className={classes.sideNavLink} component='a' href='/dashboard' variant='subtle'>
               Staff Dashboard
             </Button>
-            <Button component='a' href='/creator' variant='subtle'>
+            <Button className={classes.sideNavLink} component='a' href='/creator' variant='subtle'>
               Event Creator
             </Button> 
         </ButtonGroup>
       </AppShell.Navbar>
-      <AppShell.Main>
-        <header className="App-header">
+        <AppShell.Main>
           <h1>
             {title}
           </h1>
-        </header>
-        <Routes>
-          <Route path='/' element={<p>JJC RACING</p>} />
-          <Route path='/profile' element={<ProfileComponent />} />
-          <Route path='/events' element={<EventListComponent />} />
-          <Route path='/teamstats' element={<p>page not implemented</p>} />
-          <Route path='/dashboard' element={<StaffDashboardComponent />} />
-          <Route path='/creator' element={<CreatorComponent />} />
-          <Route path='*' element={<p>404 not found</p>} />
-        </Routes>
-      </AppShell.Main>
-    </AppShell>
-  );
+          <Routes>
+            <Route path='/' element={<p>JJC RACING</p>} />
+            <Route path='/profile' element={<ProfileComponent />} />
+            <Route path='/events' element={<EventListComponent />} />
+            <Route path='/teamstats' element={<p>page not implemented</p>} />
+            <Route path='/dashboard' element={<StaffDashboardComponent />} />
+            <Route path='/creator' element={<CreatorComponent />} />
+            <Route path='*' element={<p>404 not found</p>} />
+          </Routes>
+        </AppShell.Main>
+      </AppShell>
+    );
+  } else {
+    return <></>
+  }
 }

@@ -52,7 +52,7 @@ export default function EventListComponent() {
           >
             <Card.Section>
               <Image
-                src={event.imageURI ? require('../../public/imgs/' + event.imageURI) : ''}
+                src={event.imageURI ? require('../imgs/' + event.imageURI) : ''}
                 height={160}
                 alt={event.name}
               />
