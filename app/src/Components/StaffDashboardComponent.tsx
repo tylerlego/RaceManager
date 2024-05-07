@@ -19,7 +19,7 @@ export default function StaffDashboardComponent() {
 
       setRows(rows);
     });
-  });
+  }, []);
 
   return (
     <div>

@@ -13,7 +13,7 @@ export default function CreatorComponent() {
     carService.getAllCarClasses().then((data) => {
       setCarClasses(data.result);
     });
-  }); 
+  }, []); 
 
 
   

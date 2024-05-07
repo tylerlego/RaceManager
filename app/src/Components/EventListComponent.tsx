@@ -28,7 +28,7 @@ export default function EventListComponent() {
       setCars(cars.result);
       setRaceEvents(raceEvents.result);
     });
-  });
+  }, []);
 
   const getDateString = (timestamp: number) => {
     return new Date(timestamp * 1000).toLocaleDateString();

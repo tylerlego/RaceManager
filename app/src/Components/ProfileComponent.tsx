@@ -11,7 +11,7 @@ export default function ProfileComponent() {
         console.log("USER", user.data);
         setUser(user.data);
       });
-    });
+    }, []);
     return (
       <div>
         <Avatar src={user.discordAvatar} alt="no image here" />
