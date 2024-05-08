@@ -1,23 +1,15 @@
 import express from 'express';
 const router = express.Router();
 const passport = require('passport');
-const { Client, GatewayIntentBits } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const discordClient = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-  ]
-});
 const discordFailureRedirect = process.env.ENVIRONMENT === 'prod' ?
   `${process.env.CLIENT_BASE_URL}${process.env.DISCORD_AUTH_FAILURE_REDIRECT_PATH}` :
   `${process.env.LOCAL_CLIENT_BASE_URL}${process.env.DISCORD_AUTH_FAILURE_REDIRECT_PATH}`;
 const discordSuccessRedirect = process.env.ENVIRONMENT === 'prod' ?
   `${process.env.CLIENT_BASE_URL}${process.env.DISCORD_AUTH_SUCCESS_REDIRECT_PATH}` :
   `${process.env.LOCAL_CLIENT_BASE_URL}${process.env.DISCORD_AUTH_SUCCESS_REDIRECT_PATH}`;
-
-discordClient.login(process.env.DISCORD_BOT_TOKEN);
 
 router.get('/login/discord', passport.authenticate('discord'));
 
@@ -27,7 +19,17 @@ router.get('/redirect/discord', passport.authenticate('discord', {
 }));
 
 // Get auth user
-router.get('/auth-user', (req: any, res) => {
+router.get('/auth-user', async (req: any, res) => {
+  if (req.user === undefined) {
+    return res.json();
+  }
+
+  const guild = await req.discordBotClient.guilds.fetch({ guild: process.env.JJC_GUILD_ID || ''});
+  const userRoles = guild.members.cache.get(req.user.discordId)?.roles.cache.map((role: any) => role.name);
+  req.user = {
+    ...req.user,
+    roles: userRoles
+  };
   res.json(req.user);
 });
 

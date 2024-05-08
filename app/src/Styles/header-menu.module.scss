@@ -4,6 +4,26 @@
     border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
   }
 
+  .headerContainer {
+    margin-inline: 0;
+    // @media all and (min-width: 1024px) {
+    //   width: 1000px;
+    // }
+  
+    // @media all and (min-width: 768px) and (max-width: 1024px) {
+    //   width: 600px;
+    // }
+    
+    // @media all and (min-width: 480px) and (max-width: 768px) {
+    //   width: 100%;
+  
+    // }
+    
+    // @media all and (max-width: 480px) { 
+    //   width: 100%;
+    // }
+  }
+
   .burger {
     background-color: var(--mantine-color-black);
   }
@@ -13,6 +33,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
   }
   
   .link {
@@ -45,4 +66,14 @@
   .sideNavLink:hover {
     background-color: var(--mantine-color-yellow-filled);
     color: var(--mantine-color-black);
+  }
+
+  .footer {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: start;
+    background-color: var(--mantine-color-gray-3);
+    color: var(--mantine-color-black);
+    font-style: italic;
   }

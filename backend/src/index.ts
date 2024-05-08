@@ -1,7 +1,10 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { Client, Events, GatewayIntentBits } from "discord.js";
+import { Client, Events, GatewayIntentBits, Guild } from "discord.js";
+import { IRole, Role } from "./models/role.model";
+import assert from "assert";
+import mongoose from "mongoose";
 const session = require('express-session');
 const db = require('./db/database-client');
 const homeRouter = require('./routes/IndexRouter');
@@ -13,7 +16,6 @@ const userRouter = require('./routes/UserRouter');
 const roleRoter = require('./routes/RoleRouter');
 const { isAuthenticated } = require('./middleware/auth');
 const cookieParser = require('cookie-parser');
-// const { Client, Events, GatewayIntentBits, GuildManager } = require('discord.js');
 
 dotenv.config();
 require('./strategies/discordstrategy');
@@ -62,26 +64,35 @@ db.then((res: any) => {
   console.error('Failed to connect to database', error);
 });
 
-const discordBotClient = new Client({ intents: [GatewayIntentBits.Guilds] });
+const discordBotClient = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
+discordBotClient.login(process.env.DISCORD_BOT_TOKEN);
 
-discordBotClient.once(Events.ClientReady, (readyClient: any) => {
-	console.log(`Ready! Logged in as ${readyClient.user}`);
-  readyClient.guilds.cache.forEach((guild: any) => {
-    // console.log("GUILD", guild.roles.cache);
-    for (const [key, value] of guild.roles.cache) {
-      console.log("ROLE", key, value.name);
-    }
+discordBotClient.once(Events.ClientReady, async (readyClient: Client) => {
+	console.log(`Discord client ready! Logged in as ${readyClient.user}`);
+  const currentRoles: IRole[] | undefined = readyClient.guilds.cache.get(process.env.JJC_GUILD_ID || '')?.roles.cache.map((role: any) => {
+    const roleData: IRole = {
+      name: role.name,
+      discordRoleId: role.id,
+    };
+    return roleData;
+  });
+
+  if (!currentRoles) {
+    console.error('Failed to get current roles');
+    return;
+  }
+
+  const role = mongoose.model('Role', Role.schema);
+  mongoose.startSession().then((session: any) => {
+   session.withTransaction(async () => {
+    await role.deleteMany({}, { session: session });
+    await role.insertMany(currentRoles, { session: session });
+  })
+    .then(() => Role.countDocuments())
+    .then((count: Number) => assert.strictEqual(count, currentRoles?.length, 'Failed to save current roles to Role collection'))
+    .then(() => session.endSession());
   });
 });
-
-// // Log in to Discord with your client's token
-discordBotClient.login(process.env.DISCORD_BOT_TOKEN);
-// discordBotClient.fetchGuildPreview(process.env.JJC_GUILD_ID).then((guild: any) => {
-//   console.log("GUILD?", guild.guild);
-// });
-
-// const guildManager = new GuildManager(discordBotClient);
-// console.log("guild manager", guildManager.guilds);
 
 const passport = require('passport');
 
@@ -90,13 +101,25 @@ app.use(passport.session());
 app.use(passport.authenticate('session'));
 app.use(cookieParser());
 
-app.use('/api/auth', authRouter);
+const getDiscordClient = (req: any, res: any, next: any) => {
+  if (discordBotClient.isReady()) {
+    req.discordBotClient = discordBotClient;
+    next();
+  } else {
+    discordBotClient.once(Events.ClientReady, (readyClient: any) => {
+      req.discordBotClient = readyClient;
+      next();
+    });
+  }
+}
+
+app.use('/api/auth', getDiscordClient, authRouter);
 app.use('/api/home', homeRouter);
 app.use('/api/race/registration', isAuthenticated, raceRegistrationRouter);
 app.use('/api/car', isAuthenticated, carRouter);
 app.use('/api/events', isAuthenticated, raceEventRouter);
 app.use('/api/user', isAuthenticated, userRouter);
-app.use('/api/role', isAuthenticated, roleRoter);
+app.use('/api/role', getDiscordClient, roleRoter);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running on port: ${port}`);

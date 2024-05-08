@@ -1,8 +1,24 @@
 import mongoose from "mongoose";
 
-export const Role = mongoose.model(
+interface IRole {
+  _id?: string;
+  name: string;
+  discordRoleId: Number;
+}
+
+const Role = mongoose.model(
   "Role",
-  new mongoose.Schema({
-    name: String
+  new mongoose.Schema(
+    {
+    name: {
+      type: String,
+      required: [true, "Role name is required"],
+    },
+    discordRoleId: {
+      type: String,
+      required: [true, "Discord Role ID is required"],
+    },
   }, { collection: 'Role' })
 );
+
+export { Role, IRole };

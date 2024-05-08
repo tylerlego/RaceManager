@@ -1,4 +1,4 @@
-import { AppShell, Burger, Button, ButtonGroup, Container, Group, Image } from "@mantine/core";
+import { AppShell, Avatar, Burger, Button, ButtonGroup, Container, Group, Image, Text } from "@mantine/core";
 import { Route, Routes, useLocation } from "react-router";
 import ProfileComponent from "./ProfileComponent";
 import EventListComponent from "./Event/EventListComponent";
@@ -7,6 +7,7 @@ import CreatorComponent from "./CreatorComponent";
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import classes from '../Styles/header-menu.module.scss';
+import { SocialIcon } from "react-social-icons";
 
 const links = [
   { link: '/', label: 'Home' },
@@ -67,20 +68,19 @@ export default function HomeComponent() {
     return (
       <AppShell
         header={{ height: 60 }}  
-        navbar={{ width: 300, breakpoint: 'lg', collapsed: {mobile: !opened, desktop: true}}}
+        navbar={{ width: 300, breakpoint: 'md', collapsed: {mobile: !opened, desktop: true}}}
         padding="md"
       >
         <AppShell.Header className={classes.header}>
-          <Container size="md">
+          <Container className={classes.headerContainer} size="md">
             <div className={classes.inner}>
               <a href='/' className={classes.logo}>
                 <Image src={require('../imgs/jjc_text_logo.png')} alt="JJC Racing" width={50} height={30} />
               </a>
-              <Group gap={5} visibleFrom="sm">
+              <Group gap={5} visibleFrom="md">
                 {items}
               </Group>
-              <Burger className={classes.burger} opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
-              {/* <p><Avatar size="md" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /></p> */}
+              <Burger className={classes.burger} opened={opened} onClick={toggle} size="sm" hiddenFrom="md" />
             </div>
           </Container>
         </AppShell.Header>
@@ -105,6 +105,15 @@ export default function HomeComponent() {
               Event Creator
             </Button> 
         </ButtonGroup>
+        <Container style={{padding: '10px', fontStyle: 'italic'}} hiddenFrom="sm">
+            <Group>
+              <Avatar size="sm" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /> 
+              <Text>JJC Racing 2024</Text>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.youtube.com/@JJCRacing2751"/>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://discord.gg/Q63EVQ9qGK"/>
+            </Group>
+          </Container>
       </AppShell.Navbar>
         <AppShell.Main>
           <h1>
@@ -120,6 +129,17 @@ export default function HomeComponent() {
             <Route path='*' element={<p>404 not found</p>} />
           </Routes>
         </AppShell.Main>
+        <AppShell.Footer withBorder={false} visibleFrom="sm">
+          <Container className={classes.footer} fluid={true} size="md">
+            <Group>
+              <Avatar size="sm" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /> 
+              <Text>JJC Racing - 2024</Text>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.youtube.com/@JJCRacing2751"/>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://discord.gg/Q63EVQ9qGK"/>
+            </Group>
+          </Container>
+        </AppShell.Footer>
       </AppShell>
     );
   } else {

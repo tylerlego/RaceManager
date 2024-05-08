@@ -13,9 +13,9 @@ passport.use(new DiscordStrategy({
   scope: ['identify', 'email', 'guilds', 'guilds.members.read'],
   passReqToCallback: true,
 }, async (req: any, accessToken: string, refreshToken: string, profile: any, done: any) => {
-  // console.log("PROFILE", profile);
-  console.log("ACCESS TOKEN", accessToken);
-  console.log("REFRESH TOKEN", refreshToken);
+  // console.log("PROFILE", profile.guilds[0]);
+  // console.log("ACCESS TOKEN", accessToken);
+  // console.log("REFRESH TOKEN", refreshToken);
   if (profile.guilds.some((guild: any) => guild.id === process.env.JJC_GUILD_ID)) {
     try {
       const user: IUser | null = await User.findOne({ discordId: profile.id });
@@ -49,4 +49,6 @@ passport.use(new DiscordStrategy({
       return done(null, user);
     });
   });
+
+  
 }));

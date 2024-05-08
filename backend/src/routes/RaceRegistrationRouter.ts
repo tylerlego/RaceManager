@@ -8,6 +8,7 @@ router.post('/', async (req: Request, res: Response) => {
   try {
     // Save new registration
     const raceRegistration = mongoose.model('RaceRegistration', RaceRegistration.schema);
+    console.log("REQ BODY", req.body)
     const newRaceRegistration = new raceRegistration(req.body);
     const result = await newRaceRegistration.save();
     res.send({msg: 'Successfully submitted race registration!', result});
