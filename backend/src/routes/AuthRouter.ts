@@ -24,8 +24,11 @@ router.get('/auth-user', async (req: any, res) => {
     return res.json();
   }
 
-  const guild = await req.discordBotClient.guilds.fetch({ guild: process.env.JJC_GUILD_ID || ''});
-  const userRoles = guild.members.cache.get(req.user.discordId)?.roles.cache.map((role: any) => role.name);
+  const userRoles = await req.discordBotClient.guilds.fetch({ guild: process.env.JJC_GUILD_ID || ''})
+    .then((guild: any) => guild.members.fetch())
+    .then((members: any) => members.get(req.user.discordId)?.roles.cache
+    .map((role: any) => role.name));
+
   req.user = {
     ...req.user,
     roles: userRoles
