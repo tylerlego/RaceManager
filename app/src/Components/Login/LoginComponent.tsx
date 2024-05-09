@@ -3,6 +3,7 @@ import { DiscordLoginButton } from "react-social-login-buttons";
 import classes from '../../Styles/login.module.scss';
 import { useDisclosure } from "@mantine/hooks";
 import { SocialIcon } from 'react-social-icons'
+import { Outlet } from "react-router";
 
 export default function LoginComponent() {
   const [loginHoverState, handleLoginHoverState ] = useDisclosure(false);
@@ -45,6 +46,7 @@ export default function LoginComponent() {
           </Center>
         </Card>    
       </Center>
+      <Outlet />
     </Paper>
   );
 }

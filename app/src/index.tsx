@@ -5,7 +5,6 @@ import './Styles/main.module.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { MantineProvider } from '@mantine/core';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './Store/store';
 
@@ -17,9 +16,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <MantineProvider defaultColorScheme='dark'>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <App />
       </MantineProvider>
     </Provider>
   </React.StrictMode>

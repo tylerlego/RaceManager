@@ -1,13 +1,11 @@
-import { AppShell, Avatar, Burger, Button, ButtonGroup, Container, Group, Image, Text } from "@mantine/core";
-import { Route, Routes, useLocation } from "react-router";
-import ProfileComponent from "./ProfileComponent";
-import EventListComponent from "./Event/EventListComponent";
-import StaffDashboardComponent from "./StaffDashboardComponent";
-import CreatorComponent from "./CreatorComponent";
+import { AppShell, Avatar, Burger, Button, ButtonGroup, Container, Group, Text } from "@mantine/core";
+import { Outlet, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import classes from '../Styles/header-menu.module.scss';
 import { SocialIcon } from "react-social-icons";
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
+import { Link } from "react-router-dom";
 
 const links = [
   { link: '/', label: 'Home' },
@@ -22,18 +20,20 @@ export default function HomeComponent() {
   const [title, setTitle] = useState('');
   const [active, setActive] = useState('');
   const location = useLocation();
+  const user = useAppSelector((state) => state.app.user);
+  const isAuthenticated = useAppSelector((state) => state.app.isAuthenticated);
+  const dispatch = useAppDispatch();
 
   const items = links.map((link) => {
     return (
-      <Button 
-        component="a"
-        data-active={active === link.link || undefined} 
-        key={link.label} 
-        href={link.link}
-        className={classes.link}
+      <Link 
+        to={link.link} 
+        className={classes.link} 
+        data-active={active === link.link || undefined}
+        key={link.label}
       >
         {link.label}
-      </Button>
+      </Link>
     );
   });
 
@@ -72,11 +72,14 @@ export default function HomeComponent() {
         padding="md"
       >
         <AppShell.Header className={classes.header}>
-          <Container className={classes.headerContainer} size="md">
+          <Container className={classes.headerContainer} size="lg">
             <div className={classes.inner}>
-              <a href='/' className={classes.logo}>
-                <Image src={require('../imgs/jjc_text_logo.png')} alt="JJC Racing" width={50} height={30} />
-              </a>
+              <Button variant="transparent" component="a" href='/' className={classes.logo}>
+                <Text className={classes.logoText}>
+                  <span className={classes.logoFirst}>JJC </span>
+                  <span className={classes.logoSecond}>RACING</span>  
+                </Text>
+              </Button>
               <Group gap={5} visibleFrom="md">
                 {items}
               </Group>
@@ -84,60 +87,61 @@ export default function HomeComponent() {
             </div>
           </Container>
         </AppShell.Header>
-        <AppShell.Navbar p="md">
-          <ButtonGroup orientation='vertical'>
-            <Button className={classes.sideNavLink} component='a' href='/' variant='subtle'>
+        <AppShell.Navbar p="sm">
+          <ButtonGroup className={classes.sideNavGroup} orientation='vertical'>
+            <Link onClick={toggle} className={classes.sideNavLink} to='/' > 
               Home
-            </Button>
-            <Button className={classes.sideNavLink} component='a' href='/profile' variant='subtle'>
+            </Link>
+            <Link onClick={toggle} className={classes.sideNavLink} to="/profile">
               Profile
-            </Button>
-            <Button className={classes.sideNavLink} component='a' href='/events' variant='subtle'>
+            </Link>
+            <Link onClick={toggle} className={classes.sideNavLink} to='/events'>
               Upcoming Events
-            </Button>
-            <Button className={classes.sideNavLink} component='a' href='/teamstats' variant='subtle'>
+            </Link>
+            <Link onClick={toggle} className={classes.sideNavLink} to='/teamstats'>
               Team Results
-            </Button>
-            <Button className={classes.sideNavLink} component='a' href='/dashboard' variant='subtle'>
+            </Link>
+            <Link onClick={toggle} className={classes.sideNavLink} to='/dashboard'>
               Staff Dashboard
-            </Button>
-            <Button className={classes.sideNavLink} component='a' href='/creator' variant='subtle'>
+            </Link>
+            <Link onClick={toggle} className={classes.sideNavLink} to='/creator'>
               Event Creator
-            </Button> 
+            </Link> 
         </ButtonGroup>
-        <Container style={{padding: '10px', fontStyle: 'italic'}} hiddenFrom="sm">
-            <Group>
-              <Avatar size="sm" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /> 
-              <Text>JJC Racing 2024</Text>
-              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
-              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.youtube.com/@JJCRacing2751"/>
-              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://discord.gg/Q63EVQ9qGK"/>
-            </Group>
-          </Container>
+        <Container style={{padding: '10px', fontStyle: 'italic'}} hiddenFrom="md">
+          <Group style={{justifyContent: "center", padding: '5px'}}>
+            <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
+            <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.youtube.com/@JJCRacing2751"/>
+            <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://discord.gg/Q63EVQ9qGK"/>
+          </Group>
+          {/* <Group style={{justifyContent: "center", padding: '5px'}}>
+            <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.linkedin.com/in/tylerlego/"/>
+            <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://github.com/tylerlego"/>
+          </Group>
+          <Group style={{justifyContent: "center"}}>
+            Tyler Lego 2024
+          </Group> */}
+        </Container>
       </AppShell.Navbar>
         <AppShell.Main>
           <h1>
             {title}
           </h1>
-          <Routes>
-            <Route path='/' element={<p>JJC RACING</p>} />
-            <Route path='/profile' element={<ProfileComponent />} />
-            <Route path='/events' element={<EventListComponent />} />
-            <Route path='/teamstats' element={<p>page not implemented</p>} />
-            <Route path='/dashboard' element={<StaffDashboardComponent />} />
-            <Route path='/creator' element={<CreatorComponent />} />
-            <Route path='*' element={<p>404 not found</p>} />
-          </Routes>
+          <Outlet />
         </AppShell.Main>
         <AppShell.Footer withBorder={false} visibleFrom="sm">
           <Container className={classes.footer} fluid={true} size="md">
-            <Group>
-              <Avatar size="sm" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" /> 
-              <Text>JJC Racing - 2024</Text>
-              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
+            <Group className={classes.footerGroupLeft}>
+              <Avatar size="md" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" />               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.youtube.com/@JJCRacing2751"/>
               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://discord.gg/Q63EVQ9qGK"/>
             </Group>
+            <Group className={classes.footerGroupRight}>
+              <Text>Tyler Lego 2024</Text>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.linkedin.com/in/tylerlego/"/>
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://github.com/tylerlego"/>
+              <Avatar size="md" src={user.discordAvatar} alt="no image here" />
+             </Group>
           </Container>
         </AppShell.Footer>
       </AppShell>

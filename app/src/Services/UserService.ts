@@ -39,7 +39,6 @@ class UserService {
       if (!user) {
         throw new Error('User not found');
       } else {
-        console.log("GETTING AUTH USER", user.data);
         return user;
       }
     } catch (error) {

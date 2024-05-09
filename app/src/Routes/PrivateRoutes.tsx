@@ -4,8 +4,9 @@ import { UserService } from '../Services/UserService';
 import { Loader, LoadingOverlay } from '@mantine/core';
 
 export default function PrivateRoutes() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isChecking, setIsChecking] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
+
   const userService = new UserService();
   const isAuth = async () => {
     await userService.getAuthUser().then((res: any) => {
