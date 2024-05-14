@@ -1,20 +1,26 @@
-import { useEffect, useState } from "react";
-import { UserService } from "../Services/UserService";
-import { Avatar } from "@mantine/core";
+import { Avatar, Group, Text } from "@mantine/core";
+import { useAppSelector } from "../Store/hooks";
+import { User } from "../Types/User";
+import { Role } from "../Types/Role";
 
 export default function ProfileComponent() {
-  const [user, setUser] = useState({} as any);
-    const userService = new UserService();
+  const user: User | null = useAppSelector((state) => state.app.user);
 
-    useEffect(() => {
-      userService.getAuthUser().then((user) => {
-        setUser(user.data);
-      });
-    }, []);
-    return (
-      <div>
-        <Avatar src={user.discordAvatar} alt="no image here" />
-        <p>{user.discordUsername}</p>
-      </div>
-    );
-  }
+  return (
+    <div>
+      {user != null && (
+        <>
+          <Group style={{padding: '10px 0'}}>
+            <Avatar src={user.discordAvatar} alt="no image here" />
+            <Text>{user.discordUsername}</Text> 
+          </Group>
+          <Text>Server nickname: {user.guildNickname}</ Text>
+          <Text>Member since: {new Date(user.guildJoinedAt).toDateString()}</Text>
+          <Text>Current roles: {user.roles.map((role: Role) => {
+            return role.name;
+          }).join(', ')}</Text>
+        </>
+      )}
+    </div>
+  );
+}

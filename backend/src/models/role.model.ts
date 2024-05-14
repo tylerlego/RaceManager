@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 interface IRole {
   _id?: string;
   name: string;
-  discordRoleId: Number;
+  discordRoleId: string;
 }
 
 const Role = mongoose.model(

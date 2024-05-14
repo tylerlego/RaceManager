@@ -26,6 +26,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "js-cookie": "^3.0.5",
+    "mongodb": "^6.6.1",
     "mongoose": "^8.2.3",
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",

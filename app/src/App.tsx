@@ -12,21 +12,22 @@ import { useEffect, useState } from 'react';
 import { UserService } from './Services/UserService';
 import { LoadingOverlay } from '@mantine/core';
 import { useAppDispatch, useAppSelector } from './Store/hooks';
-import { setIsAuthenticated, setUser } from './Store/appSlice';
+import { setIsAuthenticated, setIsStaff, setUser } from './Store/appSlice';
+import { RoleEnum } from './Types/Role';
 
 function App() {
   const [isChecking, setIsChecking] = useState(true);
   const isAuthenticated = useAppSelector((state) => state.app.isAuthenticated);
+  const isStaff = useAppSelector((state) => state.app.isStaff);
+  
   const user = useAppSelector((state) => state.app.user);
   const dispatch = useAppDispatch();
   const userService = new UserService();
 
-  const isAuth = async () => {
+  const setAuth = async () => {
     console.log("is auth??", isAuthenticated);
-    if (isAuthenticated) {
-      dispatch(setIsAuthenticated(true));
-      dispatch(setUser(user));
-      setIsChecking(false);
+    console.log("user", user);
+    if (isAuthenticated && user) {
       return;
     }
     await userService.getAuthUser().then((res: any) => {
@@ -34,11 +35,21 @@ function App() {
         dispatch(setIsAuthenticated(true));
         dispatch(setUser(res.data));
       }
-      setIsChecking(false);
       return;
     });
   };
 
+  const setStaff = async () => {
+    if (user) {
+      const staff = true;
+      // const staff = user.roles.includes(RoleEnum.TOP_STAFF || RoleEnum.OWNER);
+
+      dispatch(setIsStaff(staff));
+      setIsChecking(false);
+      return staff;
+    }
+    setIsChecking(false);
+  };
   const router = createBrowserRouter([
     {
       path: "/",
@@ -86,7 +97,9 @@ function App() {
   ]);
 
   useEffect(() => {
-    isAuth();
+    setAuth().then(() => {
+      setStaff();
+    });
   }, [isAuthenticated]);
 
   if(isChecking) return (

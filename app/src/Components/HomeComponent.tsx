@@ -6,36 +6,54 @@ import classes from '../Styles/header-menu.module.scss';
 import { SocialIcon } from "react-social-icons";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import { Link } from "react-router-dom";
+import { User } from "../Types/User";
 
 const links = [
-  { link: '/', label: 'Home' },
-  { link: '/profile', label: 'Profile' },
-  { link: '/events', label: 'Events' },
-  { link: '/teamstats', label: 'Team Stats' },
-  { link: '/dashboard', label: 'Staff Dashboard' },
-  { link: '/creator', label: 'Event Creator', links: [] },
+  { link: '/', label: 'Home', staff: false },
+  { link: '/profile', label: 'Profile', staff: false},
+  { link: '/events', label: 'Events', staff: false},
+  { link: '/teamstats', label: 'Team Stats', staff: false},
+  { link: '/dashboard', label: 'Staff Dashboard', staff: true},
+  { link: '/creator', label: 'Event Creator', staff: true },
 ];
+
 export default function HomeComponent() {
   const [opened, { toggle }] = useDisclosure();
   const [title, setTitle] = useState('');
   const [active, setActive] = useState('');
+  const [linkItems, setLinkItems] = useState([] as any);
+  const isStaff = useAppSelector((state) => state.app.isStaff);
   const location = useLocation();
-  const user = useAppSelector((state) => state.app.user);
-  const isAuthenticated = useAppSelector((state) => state.app.isAuthenticated);
-  const dispatch = useAppDispatch();
+  const user: User | null = useAppSelector((state) => state.app.user);
 
-  const items = links.map((link) => {
-    return (
-      <Link 
-        to={link.link} 
-        className={classes.link} 
-        data-active={active === link.link || undefined}
-        key={link.label}
-      >
-        {link.label}
-      </Link>
-    );
-  });
+  useEffect(() => {
+    const items = links.map((link) => {
+      if (!link.staff) {      
+        return (
+          <Link 
+            to={link.link} 
+            className={classes.link} 
+            data-active={active === link.link || undefined}
+            key={link.label}
+          >
+            {link.label}
+          </Link>
+        );
+      } else if (isStaff) {
+        return (
+          <Link 
+            to={link.link} 
+            className={classes.link} 
+            data-active={active === link.link || undefined}
+            key={link.label}
+          >
+            {link.label}
+          </Link>
+        );
+      }
+    });
+    setLinkItems(items);
+  }, [active]);
 
   useEffect(() => {
     setActive(location.pathname);
@@ -64,7 +82,7 @@ export default function HomeComponent() {
     };
   }, [location]);
 
-  if (title) {
+  if (title && user) {
     return (
       <AppShell
         header={{ height: 60 }}  
@@ -81,7 +99,7 @@ export default function HomeComponent() {
                 </Text>
               </Button>
               <Group gap={5} visibleFrom="md">
-                {items}
+                {linkItems}
               </Group>
               <Burger className={classes.burger} opened={opened} onClick={toggle} size="sm" hiddenFrom="md" />
             </div>
@@ -96,17 +114,21 @@ export default function HomeComponent() {
               Profile
             </Link>
             <Link onClick={toggle} className={classes.sideNavLink} to='/events'>
-              Upcoming Events
+              Events
             </Link>
             <Link onClick={toggle} className={classes.sideNavLink} to='/teamstats'>
-              Team Results
+              Team Stats
             </Link>
-            <Link onClick={toggle} className={classes.sideNavLink} to='/dashboard'>
-              Staff Dashboard
-            </Link>
-            <Link onClick={toggle} className={classes.sideNavLink} to='/creator'>
-              Event Creator
-            </Link> 
+            {isStaff && (
+              <>
+                <Link onClick={toggle} className={classes.sideNavLink} to='/dashboard'>
+                  Staff Dashboard
+                </Link>
+                <Link onClick={toggle} className={classes.sideNavLink} to='/creator'>
+                  Event Creator
+                </Link>
+              </>
+            )}
         </ButtonGroup>
         <Container style={{padding: '10px', fontStyle: 'italic'}} hiddenFrom="md">
           <Group style={{justifyContent: "center", padding: '5px'}}>
@@ -132,7 +154,8 @@ export default function HomeComponent() {
         <AppShell.Footer withBorder={false} visibleFrom="sm">
           <Container className={classes.footer} fluid={true} size="md">
             <Group className={classes.footerGroupLeft}>
-              <Avatar size="md" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" />               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
+              <Avatar size="md" src={require('../imgs/jjc.jpeg')} alt="JJC Racing" />               
+              <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.instagram.com/jjcracing2751/"/>
               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.youtube.com/@JJCRacing2751"/>
               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://discord.gg/Q63EVQ9qGK"/>
             </Group>
@@ -140,7 +163,6 @@ export default function HomeComponent() {
               <Text>Tyler Lego 2024</Text>
               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://www.linkedin.com/in/tylerlego/"/>
               <SocialIcon style={{height: '30px', width: '30px'}} target="_blank" bgColor="black" url="https://github.com/tylerlego"/>
-              <Avatar size="md" src={user.discordAvatar} alt="no image here" />
              </Group>
           </Container>
         </AppShell.Footer>
